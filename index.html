@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunidad de Cartas</title>
+<style>
+:root{--azul:#2c7be5;--oscuro:#1e1e1e;--gris:#f2f2f2}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--gris);color:#222}
+header{background:linear-gradient(135deg,#111,#333);color:white;padding:40px 20px;text-align:center}
+header h1{margin:0;font-size:2.2rem}
+header p{opacity:.9;max-width:600px;margin:15px auto}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+button{background:var(--azul);border:none;padding:12px 18px;color:white;border-radius:8px;font-size:15px;cursor:pointer;transition:.2s}
+button:hover{background:#1a5fd0;transform:translateY(-2px)}
+section{max-width:1100px;margin:30px auto;background:white;padding:30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.hidden{display:none}
+h2{margin-top:0;color:#111}
+.pack{border:1px solid #ddd;border-radius:14px;padding:20px;margin:20px 0;display:grid;grid-template-columns:1fr auto;gap:15px}
+.pack h3{margin:0}
+.pack ul{margin:10px 0 0 18px}
+.price{font-size:1.4rem;font-weight:bold;color:#1a5fd0;align-self:center}
+.footer{text-align:center;font-size:13px;color:#555;padding:30px 15px}
+@media(max-width:700px){.pack{grid-template-columns:1fr}.price{text-align:right}}
+</style>
+</head>
+<body>
+<header>
+<h1>Bienvenido a esta comunidad</h1>
+<p>Proyecto independiente para aprender a jugar, coleccionar cartas y conocer nuestros packs.</p>
+<div class="nav">
+<button onclick="mostrar('manual')">📘 Manual</button>
+<button onclick="mostrar('catalogo')">📦 Catálogo</button>
+<button onclick="mostrar('info')">ℹ️ Info legal</button>
+</div>
+</header>
+
+<section id="manual">
+<h2>📘 Manual de juego súper fácil (paso a paso)</h2>
+
+<p>
+Este manual explica un <b>juego de cartas coleccionables</b> de forma <b>muy sencilla</b>.
+Está pensado para personas que <b>nunca han jugado antes</b>.
+No necesitas experiencia previa.
+</p>
+
+<h3>🧩 ¿Qué es este juego?</h3>
+<p>
+Es un juego donde dos personas usan cartas para hacer que sus criaturas peleen.
+Cada criatura tiene fuerza y puede atacar.
+El objetivo es <b>ganar premios</b>.
+</p>
+
+<h3>📦 ¿Qué necesitas para jugar?</h3>
+<ul>
+<li>1 baraja de <b>60 cartas</b> por jugador.</li>
+<li>Una mesa o superficie plana.</li>
+<li>Un amigo para jugar.</li>
+</ul>
+
+<h3>🃏 Tipos de cartas (explicado fácil)</h3>
+<ul>
+<li><b>Criaturas:</b> Son las que pelean.</li>
+<li><b>Cartas de apoyo:</b> Ayudan a las criaturas.</li>
+<li><b>Energías:</b> Permiten que las criaturas ataquen.</li>
+</ul>
+
+<h3>🎮 Preparación del juego (antes de empezar)</h3>
+<ol>
+<li>Baraja bien tus 60 cartas.</li>
+<li>Roba <b>7 cartas</b> y míralas.</li>
+<li>Elige <b>1 criatura básica</b> y colócala al frente (activa).</li>
+<li>Si quieres, coloca hasta <b>5 criaturas</b> atrás (banca).</li>
+<li>Coloca <b>6 cartas boca abajo</b> a un lado: son los premios.</li>
+</ol>
+
+<h3>🔄 ¿Cómo es un turno?</h3>
+<p>Cada turno siempre sigue estos pasos:</p>
+<ol>
+<li><b>Roba 1 carta.</b></li>
+<li><b>Coloca criaturas básicas</b> en la banca (si tienes).</li>
+<li><b>Usa cartas de apoyo</b> si lo deseas.</li>
+<li><b>Coloca energías</b> a tus criaturas.</li>
+<li><b>Ataca</b> con tu criatura activa.</li>
+</ol>
+
+<h3>⚔️ Combate explicado fácil</h3>
+<p>
+Cuando atacas, le quitas fuerza a la criatura rival.
+Si la fuerza llega a cero:
+</p>
+<ul>
+<li>La criatura es derrotada.</li>
+<li>El rival la retira.</li>
+<li>Tú tomas <b>1 carta de premio</b>.</li>
+</ul>
+
+<h3>🏆 ¿Cómo se gana?</h3>
+<p>Ganas inmediatamente si:</p>
+<ul>
+<li>Consigues las <b>6 cartas de premio</b>.</li>
+<li>El rival no tiene criaturas en la banca.</li>
+<li>El rival no puede robar carta en su turno.</li>
+</ul>
+
+<h3>🧠 Consejos para principiantes</h3>
+<ul>
+<li>No pongas todas tus cartas de golpe.</li>
+<li>Protege a tu criatura activa.</li>
+<li>Planea tus ataques.</li>
+<li>Diviértete, no todo es ganar.</li>
+</ul>
+
+<p>
+Este manual es <b>educativo y comunitario</b>.
+Puedes cambiar reglas para jugar de forma casual.
+</p>
+</section>
+
+<section id="catalogo" class="hidden">
+<h2>📦 Catálogo detallado</h2>
+
+<div class="pack">
+<div>
+<h3>Sobre suelto</h3>
+<ul><li>1 sobre armado con cartas variadas</li><li>Ideal para compra rápida</li></ul>
+</div><div class="price">$15</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Economic Pack</h3>
+<ul><li>3 sobres</li><li>1 carta promo</li><li>Perfecto para empezar</li></ul>
+</div><div class="price">$45</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Good Pack</h3>
+<ul><li>5 sobres</li><li>1 carta promo</li><li>Mejor valor por poco dinero</li></ul>
+</div><div class="price">$70</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Mega Pack</h3>
+<ul><li>10 sobres</li><li>1 carta promo</li><li>1 cupón de descuento</li></ul>
+</div><div class="price">$140</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Pack con Mapa 🧠</h3>
+<ul><li>15 sobres</li><li>1 carta promo</li><li>1 cupón</li><li>Mapa impreso para aprender a jugar</li></ul>
+</div><div class="price">$210</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Hiper Pack</h3>
+<ul><li>20 sobres</li><li>2 cartas promo</li><li>Stickers incluidos</li></ul>
+</div><div class="price">$270</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Premium Pack</h3>
+<ul><li>30 sobres</li><li>3 cartas promo</li><li>Cupones y sticker especial</li></ul>
+</div><div class="price">$400</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Final Pack 💀🔥</h3>
+<ul><li>50 sobres</li><li>3 cartas promo</li><li>2 stickers</li><li>Mapa incluido</li></ul>
+</div><div class="price">$650</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Titan Pack 🗿</h3>
+<ul><li>80 sobres</li><li>6 cartas promo</li><li>6 cupones</li><li>3 stickers</li><li>Mapa premium</li></ul>
+</div><div class="price">$1200</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Omega Titan Pack ⚡</h3>
+<ul><li>120 sobres</li><li>8 cartas promo</li><li>8 cupones</li><li>4 stickers</li><li>Mapa premium</li></ul>
+</div><div class="price">$1800</div>
+</div>
+
+<div class="pack">
+<div>
+<h3>Titan Mega Pack 🔥</h3>
+<ul><li>140 sobres</li><li>10 cartas promo (incluye raras)</li><li>10 cupones</li><li>5 stickers especiales</li><li>Mapa grande</li><li>Firma y número de edición</li></ul>
+</div><div class="price">$2000</div>
+</div>
+</section>
+
+<section id="info" class="hidden">
+<h2>ℹ️ Información legal</h2>
+<p>Este sitio es independiente y no oficial. No está afiliado ni autorizado por ninguna marca registrada.</p>
+<p>El contenido es educativo, informativo y comunitario.</p>
+</section>
+
+<div class="footer">Comunidad independiente de cartas · Proyecto educativo</div>
+
+<script>
+function mostrar(id){document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body>
+</html>

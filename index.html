@@ -3,212 +3,599 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comunidad de Cartas</title>
+<title>Comunidad de Cartas & Noticias</title>
 <style>
-:root{--azul:#2c7be5;--oscuro:#1e1e1e;--gris:#f2f2f2}
+/* --- ESTILOS BASE --- */
+:root{--azul:#2c7be5;--oscuro:#1e1e1e;--gris:#f2f2f2;--dorado:#ffd700;--plata:#c0c0c0;--bronce:#cd7f32;--verde:#28a745;--rojo:#dc3545;}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--gris);color:#222}
-header{background:linear-gradient(135deg,#111,#333);color:white;padding:40px 20px;text-align:center}
-header h1{margin:0;font-size:2.2rem}
-header p{opacity:.9;max-width:600px;margin:15px auto}
+body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--gris);color:#222;padding-bottom:50px;}
+header{background:linear-gradient(135deg,#111,#333);color:white;padding:30px 20px;text-align:center;position:relative;}
+header h1{margin:0;font-size:2rem;}
+
+/* --- BARRA DE USUARIO --- */
+.user-bar {background: #000; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;}
+.xp-badge {background: var(--dorado); color: black; padding: 2px 8px; border-radius: 10px; font-weight: bold;}
+.level-badge {background: var(--azul); color: white; padding: 2px 8px; border-radius: 10px; margin-left:5px;}
+.role-badge {font-size: 0.8em; padding: 2px 5px; border-radius: 4px; margin-left: 5px;}
+.role-super {background: var(--dorado); color: black;}
+.role-admin {background: var(--rojo); color: white;}
+
+/* --- NAVEGACIÓN --- */
 .nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
-button{background:var(--azul);border:none;padding:12px 18px;color:white;border-radius:8px;font-size:15px;cursor:pointer;transition:.2s}
+button{background:var(--azul);border:none;padding:10px 16px;color:white;border-radius:6px;font-size:14px;cursor:pointer;transition:.2s; font-weight: 600;}
 button:hover{background:#1a5fd0;transform:translateY(-2px)}
-section{max-width:1100px;margin:30px auto;background:white;padding:30px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
-.hidden{display:none}
-h2{margin-top:0;color:#111}
+button.secondary {background: #6c757d;}
+button.logout {background: var(--rojo);}
+button.legal {background: #333;}
+
+/* --- SECCIONES --- */
+section{max-width:1000px;margin:20px auto;background:white;padding:25px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,.1); display: none; animation: fadeIn 0.3s;}
+section.active {display: block;}
+@keyframes fadeIn {from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+h2{margin-top:0;color:#111; border-bottom: 2px solid var(--azul); padding-bottom: 10px; display: inline-block;}
+h3{margin-top:20px; color: #444;}
+
+/* --- NOTICIAS --- */
+.news-card {border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 20px;}
+.news-header {padding: 15px; background: #f8f9fa; border-bottom: 1px solid #eee;}
+.news-title {margin: 0; font-size: 1.2rem; color: var(--azul);}
+.news-date {font-size: 0.8rem; color: #666; display: block; margin-top: 5px;}
+.news-body {padding: 15px; line-height: 1.6;}
+.news-img {max-width: 100%; height: auto; display: block; margin-top: 10px; border-radius: 4px;}
+
+/* --- LOGIN / REGISTRO --- */
+.auth-container {max-width: 400px; margin: 50px auto; text-align: center;}
+.form-group {margin-bottom: 15px; text-align: left;}
+.form-group label {display: block; margin-bottom: 5px; font-weight: bold;}
+.form-group input, .form-group textarea {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;}
+.auth-toggle {color: var(--azul); cursor: pointer; text-decoration: underline; margin-top: 10px; display: block;}
+
+/* --- RANKING --- */
+.ranking-table {width: 100%; border-collapse: collapse; margin-top: 20px;}
+.ranking-table th, .ranking-table td {padding: 12px; text-align: left; border-bottom: 1px solid #ddd;}
+.ranking-table th {background: #f8f9fa;}
+.rank-1 {color: var(--dorado); font-weight: bold; font-size: 1.1em;}
+.rank-2 {color: var(--plata); font-weight: bold;}
+.rank-3 {color: var(--bronce); font-weight: bold;}
+.winner-banner {background: linear-gradient(45deg, #ffd700, #ffaa00); color: black; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; font-size: 1.2rem; display: none;}
+
+/* --- CÓDIGOS Y ENCUESTAS --- */
+.code-box {display: flex; gap: 10px; margin-top: 15px;}
+.code-box input {flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-transform: uppercase;}
+
+.poll-item {border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px;}
+.poll-option {background: #f1f1f1; margin: 8px 0; padding: 10px; border-radius: 5px; cursor: pointer; position: relative; overflow: hidden;}
+.poll-option:hover {background: #e9e9e9;}
+.poll-bar {position: absolute; left: 0; top: 0; bottom: 0; background: rgba(44, 123, 229, 0.2); z-index: 0; transition: width 0.5s;}
+.poll-text {position: relative; z-index: 1; display: flex; justify-content: space-between;}
+
+/* --- CATALOGO --- */
 .pack{border:1px solid #ddd;border-radius:14px;padding:20px;margin:20px 0;display:grid;grid-template-columns:1fr auto;gap:15px}
 .pack h3{margin:0}
 .pack ul{margin:10px 0 0 18px}
 .price{font-size:1.4rem;font-weight:bold;color:#1a5fd0;align-self:center}
+
+/* --- ADMIN PANEL --- */
+.admin-panel {border: 2px solid var(--rojo); padding: 20px; border-radius: 10px; background: #fff5f5;}
+.admin-section {margin-top: 20px; padding-top: 20px; border-top: 1px solid #ffcccc;}
+.restricted {opacity: 0.5; pointer-events: none; position: relative;}
+.restricted::after {content: "🔒 Solo Super Admin"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #333; color: white; padding: 5px 10px; border-radius: 5px;}
+
+/* --- OTRAS CLASES --- */
+.hidden {display: none !important;}
 .footer{text-align:center;font-size:13px;color:#555;padding:30px 15px}
+.legal-text {font-size: 0.8rem; color: #666; line-height: 1.5; background: #eee; padding: 15px; border-radius: 8px; margin-top: 20px;}
 @media(max-width:700px){.pack{grid-template-columns:1fr}.price{text-align:right}}
 </style>
 </head>
 <body>
-<header>
-<h1>Bienvenido a esta comunidad</h1>
-<p>Proyecto independiente para aprender a jugar, coleccionar cartas y conocer nuestros packs.</p>
-<div class="nav">
-<button onclick="mostrar('manual')">📘 Manual</button>
-<button onclick="mostrar('catalogo')">📦 Catálogo</button>
-<button onclick="mostrar('info')">ℹ️ Info legal</button>
-</div>
-</header>
 
-<section id="manual">
-<h2>📘 Manual de juego súper fácil (paso a paso)</h2>
-
-<p>
-Este manual explica un <b>juego de cartas coleccionables</b> de forma <b>muy sencilla</b>.
-Está pensado para personas que <b>nunca han jugado antes</b>.
-No necesitas experiencia previa.
-</p>
-
-<h3>🧩 ¿Qué es este juego?</h3>
-<p>
-Es un juego donde dos personas usan cartas para hacer que sus criaturas peleen.
-Cada criatura tiene fuerza y puede atacar.
-El objetivo es <b>ganar premios</b>.
-</p>
-
-<h3>📦 ¿Qué necesitas para jugar?</h3>
-<ul>
-<li>1 baraja de <b>60 cartas</b> por jugador.</li>
-<li>Una mesa o superficie plana.</li>
-<li>Un amigo para jugar.</li>
-</ul>
-
-<h3>🃏 Tipos de cartas (explicado fácil)</h3>
-<ul>
-<li><b>Criaturas:</b> Son las que pelean.</li>
-<li><b>Cartas de apoyo:</b> Ayudan a las criaturas.</li>
-<li><b>Energías:</b> Permiten que las criaturas ataquen.</li>
-</ul>
-
-<h3>🎮 Preparación del juego (antes de empezar)</h3>
-<ol>
-<li>Baraja bien tus 60 cartas.</li>
-<li>Roba <b>7 cartas</b> y míralas.</li>
-<li>Elige <b>1 criatura básica</b> y colócala al frente (activa).</li>
-<li>Si quieres, coloca hasta <b>5 criaturas</b> atrás (banca).</li>
-<li>Coloca <b>6 cartas boca abajo</b> a un lado: son los premios.</li>
-</ol>
-
-<h3>🔄 ¿Cómo es un turno?</h3>
-<p>Cada turno siempre sigue estos pasos:</p>
-<ol>
-<li><b>Roba 1 carta.</b></li>
-<li><b>Coloca criaturas básicas</b> en la banca (si tienes).</li>
-<li><b>Usa cartas de apoyo</b> si lo deseas.</li>
-<li><b>Coloca energías</b> a tus criaturas.</li>
-<li><b>Ataca</b> con tu criatura activa.</li>
-</ol>
-
-<h3>⚔️ Combate explicado fácil</h3>
-<p>
-Cuando atacas, le quitas fuerza a la criatura rival.
-Si la fuerza llega a cero:
-</p>
-<ul>
-<li>La criatura es derrotada.</li>
-<li>El rival la retira.</li>
-<li>Tú tomas <b>1 carta de premio</b>.</li>
-</ul>
-
-<h3>🏆 ¿Cómo se gana?</h3>
-<p>Ganas inmediatamente si:</p>
-<ul>
-<li>Consigues las <b>6 cartas de premio</b>.</li>
-<li>El rival no tiene criaturas en la banca.</li>
-<li>El rival no puede robar carta en su turno.</li>
-</ul>
-
-<h3>🧠 Consejos para principiantes</h3>
-<ul>
-<li>No pongas todas tus cartas de golpe.</li>
-<li>Protege a tu criatura activa.</li>
-<li>Planea tus ataques.</li>
-<li>Diviértete, no todo es ganar.</li>
-</ul>
-
-<p>
-Este manual es <b>educativo y comunitario</b>.
-Puedes cambiar reglas para jugar de forma casual.
-</p>
-</section>
-
-<section id="catalogo" class="hidden">
-<h2>📦 Catálogo detallado</h2>
-
-<div class="pack">
-<div>
-<h3>Sobre suelto</h3>
-<ul><li>1 sobre armado con cartas variadas</li><li>Ideal para compra rápida</li></ul>
-</div><div class="price">$15</div>
+<div id="auth-screen" class="auth-container">
+    <h1 style="color:var(--azul)">MONSTER TCG</h1>
+    <div id="login-form">
+        <h2>Iniciar Sesión</h2>
+        <div class="form-group"><label>Usuario</label><input type="text" id="login-user"></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="login-pass"></div>
+        <button onclick="app.login()" style="width:100%">Entrar (+10 XP Diario)</button>
+        <span class="auth-toggle" onclick="app.toggleAuth('register')">¿No tienes cuenta? Regístrate</span>
+    </div>
+    <div id="register-form" class="hidden">
+        <h2>Crear Cuenta</h2>
+        <div class="form-group"><label>Usuario Nuevo</label><input type="text" id="reg-user"></div>
+        <div class="form-group"><label>Contraseña</label><input type="password" id="reg-pass"></div>
+        <button onclick="app.register()" style="width:100%">Registrarse</button>
+        <span class="auth-toggle" onclick="app.toggleAuth('login')">¿Ya tienes cuenta? Inicia sesión</span>
+    </div>
 </div>
 
-<div class="pack">
-<div>
-<h3>Economic Pack</h3>
-<ul><li>3 sobres</li><li>1 carta promo</li><li>Perfecto para empezar</li></ul>
-</div><div class="price">$45</div>
+<div id="app-screen" class="hidden">
+    <div class="user-bar">
+        <div>
+            👤 <span id="display-user">Usuario</span> 
+            <span id="role-badge"></span>
+            <span class="level-badge" id="display-lvl">Nvl 1</span>
+        </div>
+        <div>
+            ⭐ <span id="display-xp">0</span> XP
+            <button class="logout" onclick="app.logout()" style="padding: 4px 10px; margin-left: 10px; font-size: 12px;">Salir</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Comunidad de Cartas</h1>
+        <p>Proyecto independiente para aprender a jugar, coleccionar cartas y conocer nuestros packs.</p>
+        <div class="nav">
+            <button onclick="view.show('noticias')">📰 Noticias</button>
+            <button onclick="view.show('ranking')">🏆 Ranking</button>
+            <button onclick="view.show('encuestas')">📊 Encuestas</button>
+            <button onclick="view.show('codigos')">🎟️ Códigos</button>
+            <button onclick="view.show('catalogo')">📦 Catálogo</button>
+            <button onclick="view.show('manual')" class="secondary">📘 Manual</button>
+            <button onclick="view.show('info')" class="legal">⚖️ Legal</button>
+            <button onclick="view.show('admin')" id="btn-admin" class="hidden" style="background:var(--rojo)">🛠️ Admin</button>
+        </div>
+    </header>
+
+    <section id="noticias" class="active">
+        <h2>📰 Noticias Oficiales</h2>
+        <div id="news-container">
+            </div>
+    </section>
+
+    <section id="ranking">
+        <h2>🏆 Ranking de Jugadores</h2>
+        <div id="winner-banner" class="winner-banner hidden">
+            👑 ¡GLORIA ETERNA! 👑<br>
+            El ganador del mes pasado fue: <strong id="winner-name"></strong><br>
+            <small>La recompensa ha sido enviada.</small>
+        </div>
+        <p>Gana XP participando. El Ranking se reinicia cada mes.</p>
+        <table class="ranking-table">
+            <thead><tr><th>#</th><th>Usuario</th><th>Nivel</th><th>XP</th></tr></thead>
+            <tbody id="ranking-list"></tbody>
+        </table>
+    </section>
+
+    <section id="encuestas">
+        <h2>📊 Encuestas de la Comunidad</h2>
+        <p>Vota para ganar XP (+40 XP). ¡Tu opinión decide!</p>
+        <div id="polls-container"></div>
+    </section>
+
+    <section id="codigos">
+        <h2>🎟️ Canjear Código</h2>
+        <p>¿Compraste un pack? Introduce el código para ganar 50 XP.</p>
+        <div class="code-box">
+            <input type="text" id="code-input" placeholder="XXXX-XXXX-XXXX">
+            <button onclick="app.redeemCode()">Canjear</button>
+        </div>
+    </section>
+
+    <section id="catalogo">
+        <h2>📦 Catálogo detallado</h2>
+        <div class="pack"><div><h3>Sobre suelto</h3><ul><li>1 sobre armado</li></ul></div><div class="price">$15</div></div>
+        <div class="pack"><div><h3>Economic Pack</h3><ul><li>3 sobres + Promo</li></ul></div><div class="price">$45</div></div>
+        <div class="pack"><div><h3>Good Pack</h3><ul><li>5 sobres + Promo</li></ul></div><div class="price">$70</div></div>
+        <div class="pack"><div><h3>Mega Pack</h3><ul><li>10 sobres + Cupón</li></ul></div><div class="price">$140</div></div>
+        <div class="pack"><div><h3>Pack con Mapa 🧠</h3><ul><li>15 sobres + Mapa</li></ul></div><div class="price">$210</div></div>
+        <div class="pack"><div><h3>Hiper Pack</h3><ul><li>20 sobres + Stickers</li></ul></div><div class="price">$270</div></div>
+        <div class="pack"><div><h3>Premium Pack</h3><ul><li>30 sobres + Extras</li></ul></div><div class="price">$400</div></div>
+        <div class="pack"><div><h3>Final Pack 💀🔥</h3><ul><li>50 sobres + Mapa</li></ul></div><div class="price">$650</div></div>
+        <div class="pack"><div><h3>Titan Pack 🗿</h3><ul><li>80 sobres + Premium</li></ul></div><div class="price">$1200</div></div>
+        <div class="pack"><div><h3>Omega Titan Pack ⚡</h3><ul><li>120 sobres + Extras</li></ul></div><div class="price">$1800</div></div>
+        <div class="pack"><div><h3>Titan Mega Pack 🔥</h3><ul><li>140 sobres + Firmado</li></ul></div><div class="price">$2000</div></div>
+    </section>
+
+    <section id="manual">
+        <h2>📘 Manual de juego súper fácil</h2>
+        <p>Este manual explica un <b>juego de cartas coleccionables</b> de forma <b>muy sencilla</b>.</p>
+        <h3>🧩 ¿Qué es este juego?</h3>
+        <p>Es un juego donde dos personas usan cartas para hacer que sus criaturas peleen. Objetivo: <b>ganar premios</b>.</p>
+        <h3>📦 ¿Qué necesitas?</h3>
+        <ul><li>1 baraja de 60 cartas.</li><li>Una mesa.</li><li>Un amigo.</li></ul>
+        <h3>🃏 Tipos de cartas</h3>
+        <ul><li><b>Criaturas:</b> Pelean.</li><li><b>Apoyo:</b> Ayudan.</li><li><b>Energías:</b> Permiten atacar.</li></ul>
+        <h3>🎮 Preparación</h3>
+        <ol><li>Baraja 60 cartas.</li><li>Roba 7.</li><li>Elige 1 criatura básica (activa).</li><li>Pon premios (6 cartas).</li></ol>
+        <h3>🔄 Turno</h3>
+        <ol><li>Roba.</li><li>Banca.</li><li>Apoyo.</li><li>Energía.</li><li>Ataca.</li></ol>
+        <h3>⚔️ Combate y Ganar</h3>
+        <p>Si la fuerza rival llega a cero, tomas premio. Ganas si consigues 6 premios o el rival no tiene banca.</p>
+    </section>
+
+    <section id="info">
+        <h2>⚖️ Información Legal</h2>
+        <div class="legal-text">
+            <p><b>1. Proyecto Independiente:</b> Este sitio web es un proyecto educativo y recreativo. No estamos afiliados con ninguna corporación multinacional.</p>
+            <p><b>2. Propiedad Intelectual:</b> Marcas y logotipos pertenecen a sus dueños. Uso bajo normas de uso justo.</p>
+            <p><b>3. Sistema de XP:</b> Los puntos son virtuales y no tienen valor monetario.</p>
+            <p><b>4. Privacidad:</b> Datos almacenados localmente.</p>
+        </div>
+    </section>
+
+    <section id="admin">
+        <h2>🛠️ Panel de Control</h2>
+        <div class="admin-panel">
+            
+            <div id="super-admin-tools">
+                <h3>👑 Gestión de Staff (Solo Super Admin)</h3>
+                <div class="code-box">
+                    <input type="text" id="new-admin-user" placeholder="Usuario existente para hacer Admin">
+                    <button onclick="admin.addAdmin()" style="background:var(--dorado); color:black;">Nombrar Admin</button>
+                </div>
+                
+                <div class="admin-section">
+                    <h3>➕ Agregar Código XP (Solo Super Admin)</h3>
+                    <div class="code-box">
+                        <input type="text" id="new-code-val" placeholder="NUEVO CÓDIGO">
+                        <button onclick="admin.addCode()">Crear</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <h3>📰 Publicar Noticia (Admins)</h3>
+                <input type="text" id="news-title" placeholder="Título de la noticia" style="width:100%; padding:10px; margin-bottom:10px;">
+                <textarea id="news-content" placeholder="Escribe aquí el contenido..." rows="3" style="width:100%; margin-bottom:10px;"></textarea>
+                <input type="text" id="news-img" placeholder="URL de imagen (Opcional)" style="width:100%; padding:10px; margin-bottom:10px;">
+                <button onclick="admin.postNews()">Publicar Noticia</button>
+            </div>
+
+            <div class="admin-section">
+                <h3>📝 Crear Encuesta (Admins)</h3>
+                <input type="text" id="poll-question" placeholder="Pregunta" style="width:100%; padding:10px; margin-bottom:10px;">
+                <input type="text" id="poll-opt1" placeholder="Opción 1" style="width:48%; padding:10px;">
+                <input type="text" id="poll-opt2" placeholder="Opción 2" style="width:48%; padding:10px;">
+                <button onclick="admin.createPoll()" style="margin-top:10px; width:100%;">Publicar Encuesta</button>
+            </div>
+            
+            <div class="admin-section" id="reset-tool">
+                <h3>⚠️ Gestión</h3>
+                <button onclick="admin.forceReset()" style="background:#444">Forzar Reinicio de Mes</button>
+            </div>
+        </div>
+    </section>
 </div>
 
-<div class="pack">
-<div>
-<h3>Good Pack</h3>
-<ul><li>5 sobres</li><li>1 carta promo</li><li>Mejor valor por poco dinero</li></ul>
-</div><div class="price">$70</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Mega Pack</h3>
-<ul><li>10 sobres</li><li>1 carta promo</li><li>1 cupón de descuento</li></ul>
-</div><div class="price">$140</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Pack con Mapa 🧠</h3>
-<ul><li>15 sobres</li><li>1 carta promo</li><li>1 cupón</li><li>Mapa impreso para aprender a jugar</li></ul>
-</div><div class="price">$210</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Hiper Pack</h3>
-<ul><li>20 sobres</li><li>2 cartas promo</li><li>Stickers incluidos</li></ul>
-</div><div class="price">$270</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Premium Pack</h3>
-<ul><li>30 sobres</li><li>3 cartas promo</li><li>Cupones y sticker especial</li></ul>
-</div><div class="price">$400</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Final Pack 💀🔥</h3>
-<ul><li>50 sobres</li><li>3 cartas promo</li><li>2 stickers</li><li>Mapa incluido</li></ul>
-</div><div class="price">$650</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Titan Pack 🗿</h3>
-<ul><li>80 sobres</li><li>6 cartas promo</li><li>6 cupones</li><li>3 stickers</li><li>Mapa premium</li></ul>
-</div><div class="price">$1200</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Omega Titan Pack ⚡</h3>
-<ul><li>120 sobres</li><li>8 cartas promo</li><li>8 cupones</li><li>4 stickers</li><li>Mapa premium</li></ul>
-</div><div class="price">$1800</div>
-</div>
-
-<div class="pack">
-<div>
-<h3>Titan Mega Pack 🔥</h3>
-<ul><li>140 sobres</li><li>10 cartas promo (incluye raras)</li><li>10 cupones</li><li>5 stickers especiales</li><li>Mapa grande</li><li>Firma y número de edición</li></ul>
-</div><div class="price">$2000</div>
-</div>
-</section>
-
-<section id="info" class="hidden">
-<h2>ℹ️ Información legal</h2>
-<p>Este sitio es independiente y no oficial. No está afiliado ni autorizado por ninguna marca registrada.</p>
-<p>El contenido es educativo, informativo y comunitario.</p>
-</section>
-
-<div class="footer">Comunidad independiente de cartas · Proyecto educativo</div>
+<div class="footer">Comunidad independiente · Sistema v3.0</div>
 
 <script>
-function mostrar(id){document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+/**
+ * SISTEMA INTEGRAL TCG v3
+ * Admin Jerárquico + Noticias + XP Universal
+ */
+
+const SUPER_ADMIN_USER = "ddxus";
+const SUPER_ADMIN_PASS = "102938475611556651029384756";
+
+const defaultDB = {
+    users: [],
+    codes: ["TCG-2026", "WELCOME"], 
+    polls: [{id: 1, question: "¿Qué elemento prefieres?", options: [{txt:"Fuego", votes:0}, {txt:"Agua", votes:0}], active: true}],
+    news: [
+        {id: 0, title: "¡Bienvenidos!", content: "Sistema de noticias activo. Atentos a las novedades.", date: "2026-01-28", author: "ddxus", img: ""}
+    ],
+    lastResetMonth: new Date().getMonth(),
+    lastMonthWinner: null
+};
+
+let db = JSON.parse(localStorage.getItem('tcgDB_v3')) || defaultDB;
+let currentUser = null;
+
+function saveDB() {
+    localStorage.setItem('tcgDB_v3', JSON.stringify(db));
+    renderAll();
+}
+
+const app = {
+    init: () => { logic.checkMonthlyReset(); },
+
+    toggleAuth: (mode) => {
+        document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+        document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
+    },
+
+    register: () => {
+        const u = document.getElementById('reg-user').value.trim();
+        const p = document.getElementById('reg-pass').value.trim();
+        if(!u || !p) return alert("Faltan datos");
+        if(db.users.find(user => user.username === u)) return alert("Usuario ocupado");
+
+        const newUser = {
+            username: u, password: p, xp: 0, level: 1,
+            role: 'user', // roles: 'user', 'admin' (El super admin es hardcoded o especial)
+            redeemedCodes: [], votedPolls: [], lastLogin: null
+        };
+        db.users.push(newUser);
+        saveDB();
+        alert("¡Cuenta creada!");
+        app.toggleAuth('login');
+    },
+
+    login: () => {
+        const u = document.getElementById('login-user').value.trim();
+        const p = document.getElementById('login-pass').value.trim();
+
+        // 1. Verificar si es SUPER ADMIN
+        if(u === SUPER_ADMIN_USER && p === SUPER_ADMIN_PASS) {
+            currentUser = {
+                username: "ddxus", xp: 99999, level: 100, 
+                role: 'superadmin', redeemedCodes: [], votedPolls:[]
+            };
+            // Intentar recuperar XP real si se guardó antes, sino usa defaults
+            const savedSuper = db.users.find(x => x.username === SUPER_ADMIN_USER);
+            if(savedSuper) currentUser = savedSuper;
+            else {
+                // Si es la primera vez, lo guardamos en DB para que acumule XP también
+                currentUser.role = 'superadmin'; // Asegurar rol
+                db.users.push(currentUser);
+                saveDB();
+            }
+            
+            alert("Bienvenido Gran Jefe (Super Admin).");
+            app.enterApp();
+            return;
+        }
+
+        // 2. Verificar usuario normal o admin regular
+        const userFound = db.users.find(user => user.username === u && user.password === p);
+        if(userFound) {
+            currentUser = userFound;
+            logic.dailyLoginReward();
+            app.enterApp();
+        } else {
+            alert("Datos incorrectos.");
+        }
+    },
+
+    enterApp: () => {
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('app-screen').classList.remove('hidden');
+        view.updateHeader();
+
+        // Mostrar botón Admin si tiene rango
+        if(currentUser.role === 'admin' || currentUser.role === 'superadmin') {
+            document.getElementById('btn-admin').classList.remove('hidden');
+        } else {
+            document.getElementById('btn-admin').classList.add('hidden');
+        }
+
+        // Configurar herramientas según rol
+        const tools = document.getElementById('super-admin-tools');
+        if(currentUser.role === 'superadmin') {
+            tools.classList.remove('hidden');
+        } else {
+            tools.classList.add('hidden'); // Ocultar herramientas de super admin a otros
+        }
+
+        renderAll();
+    },
+
+    logout: () => { currentUser = null; location.reload(); },
+
+    redeemCode: () => {
+        const input = document.getElementById('code-input');
+        const code = input.value.trim().toUpperCase();
+        if(!code) return;
+        
+        // RESTRICCIÓN: Sub-Admins y Super Admin no necesitan códigos? 
+        // El usuario dijo "los admin pueden ganar xp". Así que permitimos canjear.
+        
+        if(currentUser.redeemedCodes.includes(code)) return alert("Ya usado.");
+        
+        if(db.codes.includes(code)) {
+            logic.addXP(50);
+            currentUser.redeemedCodes.push(code);
+            saveDB();
+            alert(`¡+50 XP!`);
+            input.value = "";
+        } else {
+            alert("Código inválido.");
+        }
+    }
+};
+
+const logic = {
+    addXP: (amount) => {
+        // AHORA TODOS PUEDEN GANAR XP (Admins incluidos)
+        currentUser.xp += amount;
+        currentUser.level = Math.floor(currentUser.xp / 100) + 1;
+        
+        // Actualizar en DB
+        const idx = db.users.findIndex(u => u.username === currentUser.username);
+        if(idx !== -1) db.users[idx] = currentUser;
+        saveDB();
+        view.updateHeader();
+    },
+
+    dailyLoginReward: () => {
+        const today = new Date().toDateString();
+        if(currentUser.lastLogin !== today) {
+            currentUser.lastLogin = today;
+            alert("Login Diario: +10 XP");
+            logic.addXP(10);
+        }
+    },
+
+    votePoll: (pollId, idx) => {
+        if(currentUser.votedPolls.includes(pollId)) return alert("Ya votaste.");
+        const poll = db.polls.find(p => p.id === pollId);
+        if(poll) {
+            poll.options[idx].votes++;
+            currentUser.votedPolls.push(pollId);
+            logic.addXP(40);
+            saveDB();
+            alert("Voto: +40 XP");
+        }
+    },
+
+    checkMonthlyReset: () => {
+        const currentMonth = new Date().getMonth();
+        if(db.lastResetMonth !== currentMonth) {
+            if(db.users.length > 0) {
+                const sorted = [...db.users].sort((a,b) => b.xp - a.xp);
+                db.lastMonthWinner = sorted[0].username;
+            }
+            db.users.forEach(u => { u.xp = 0; u.votedPolls = []; });
+            db.lastResetMonth = currentMonth;
+            saveDB();
+        }
+    }
+};
+
+const admin = {
+    addCode: () => {
+        if(currentUser.role !== 'superadmin') return alert("Solo ddxus puede crear códigos.");
+        const c = document.getElementById('new-code-val').value.trim().toUpperCase();
+        if(c) { db.codes.push(c); saveDB(); alert("Código creado."); }
+    },
+
+    addAdmin: () => {
+        if(currentUser.role !== 'superadmin') return alert("Solo ddxus puede nombrar admins.");
+        const targetUser = document.getElementById('new-admin-user').value.trim();
+        const userIdx = db.users.findIndex(u => u.username === targetUser);
+        
+        if(userIdx > -1) {
+            db.users[userIdx].role = 'admin';
+            saveDB();
+            alert(`¡${targetUser} ahora es Admin!`);
+        } else {
+            alert("Usuario no encontrado.");
+        }
+    },
+
+    postNews: () => {
+        // Permitido para 'admin' y 'superadmin'
+        const title = document.getElementById('news-title').value;
+        const body = document.getElementById('news-content').value;
+        const img = document.getElementById('news-img').value;
+
+        if(title && body) {
+            db.news.unshift({
+                id: Date.now(),
+                title: title,
+                content: body,
+                img: img,
+                date: new Date().toLocaleDateString(),
+                author: currentUser.username
+            });
+            saveDB();
+            alert("Noticia publicada.");
+            view.renderNews();
+            // Limpiar campos
+            document.getElementById('news-title').value = "";
+            document.getElementById('news-content').value = "";
+        } else {
+            alert("Falta título o contenido.");
+        }
+    },
+
+    createPoll: () => {
+        const q = document.getElementById('poll-question').value;
+        const o1 = document.getElementById('poll-opt1').value;
+        const o2 = document.getElementById('poll-opt2').value;
+        if(q && o1 && o2) {
+            db.polls.unshift({id: Date.now(), question: q, options: [{txt:o1, votes:0}, {txt:o2, votes:0}], active: true});
+            saveDB();
+            alert("Encuesta creada.");
+            view.renderPolls();
+        }
+    },
+    
+    forceReset: () => {
+        if(confirm("¿Resetear mes?")) { db.lastResetMonth = 99; logic.checkMonthlyReset(); location.reload(); }
+    }
+};
+
+const view = {
+    show: (id) => {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'ranking') renderAll();
+        if(id === 'noticias') view.renderNews();
+        if(id === 'encuestas') view.renderPolls();
+    },
+
+    updateHeader: () => {
+        document.getElementById('display-user').innerText = currentUser.username;
+        document.getElementById('display-xp').innerText = currentUser.xp;
+        document.getElementById('display-lvl').innerText = "Nvl " + currentUser.level;
+        
+        const badge = document.getElementById('role-badge');
+        badge.className = "role-badge";
+        badge.innerText = "";
+        if(currentUser.role === 'superadmin') {
+            badge.classList.add('role-super'); badge.innerText = "Jefe Supremo";
+        } else if (currentUser.role === 'admin') {
+            badge.classList.add('role-admin'); badge.innerText = "Admin";
+        }
+    },
+
+    renderNews: () => {
+        const container = document.getElementById('news-container');
+        container.innerHTML = "";
+        db.news.forEach(n => {
+            const imgHTML = n.img ? `<img src="${n.img}" class="news-img">` : '';
+            const html = `
+                <div class="news-card">
+                    <div class="news-header">
+                        <h3 class="news-title">${n.title}</h3>
+                        <span class="news-date">${n.date} - Por ${n.author}</span>
+                    </div>
+                    <div class="news-body">
+                        <p>${n.content}</p>
+                        ${imgHTML}
+                    </div>
+                </div>`;
+            container.innerHTML += html;
+        });
+    },
+
+    renderRanking: () => {
+        const tbody = document.getElementById('ranking-list');
+        tbody.innerHTML = "";
+        const sorted = [...db.users].sort((a,b) => b.xp - a.xp).slice(0, 50);
+
+        sorted.forEach((u, index) => {
+            let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`;
+            let rowClass = index < 3 ? `rank-${index+1}` : "";
+            
+            // Distintivo visual en tabla
+            let nameDisplay = u.username;
+            if(u.role === 'superadmin') nameDisplay += " (👑)";
+            if(u.role === 'admin') nameDisplay += " (🛡️)";
+
+            tbody.innerHTML += `<tr><td class="${rowClass}">${medal}</td><td class="${rowClass}">${nameDisplay}</td><td>${u.level}</td><td>${u.xp} XP</td></tr>`;
+        });
+        if(db.lastMonthWinner) {
+            document.getElementById('winner-name').innerText = db.lastMonthWinner;
+            document.getElementById('winner-banner').classList.remove('hidden');
+            document.getElementById('winner-banner').style.display = 'block';
+        }
+    },
+
+    renderPolls: () => {
+        const container = document.getElementById('polls-container');
+        container.innerHTML = "";
+        db.polls.forEach(poll => {
+            const total = poll.options.reduce((a, b) => a + b.votes, 0);
+            let opts = "";
+            poll.options.forEach((o, i) => {
+                const pct = total ? Math.round((o.votes/total)*100) : 0;
+                opts += `<div class="poll-option" onclick="logic.votePoll(${poll.id}, ${i})">
+                    <div class="poll-bar" style="width:${pct}%"></div>
+                    <div class="poll-text"><span>${o.txt}</span><small>${pct}%</small></div>
+                </div>`;
+            });
+            container.innerHTML += `<div class="poll-item"><h3>${poll.question}</h3>${opts}</div>`;
+        });
+    }
+};
+
+function renderAll() { view.renderRanking(); view.renderPolls(); view.renderNews(); }
+
+app.init();
 </script>
 </body>
 </html>

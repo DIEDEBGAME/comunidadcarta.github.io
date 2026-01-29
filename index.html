@@ -3,128 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONSTER TCG - Comunidad Online</title>
+    <title>MONSTER TCG - HUB PROFESIONAL</title>
     <style>
-        /* =========================================
-           ESTILOS (Mismo diseño bonito)
-           ========================================= */
-        :root { --azul: #2c7be5; --fondo: #f4f6f8; --rojo: #dc3545; --dorado: #ffd700; --verde: #28a745; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { margin: 0; background: var(--fondo); color: #333; padding-bottom: 80px; }
-        
-        /* LOGIN */
-        .auth-container { max-width: 400px; margin: 60px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
-        .form-group input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-primary { background: var(--azul); color: white; }
-        .btn-primary:hover { background: #1a5fd0; }
-        
-        /* APP UI */
+        :root {
+            --primary: #2c7be5;
+            --dark: #1a1a1a;
+            --light: #f9f9f9;
+            --accent: #ffd700;
+            --danger: #dc3545;
+            --success: #28a745;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
+            color: white;
+            padding-bottom: 50px;
+        }
+
+        /* --- LOGIN --- */
+        #auth-screen {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+        }
+
+        .auth-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #222;
+            color: white;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        /* --- APP STRUCTURE --- */
+        .top-bar {
+            background: #000;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            background: #1a1a1a;
+            padding: 10px;
+            gap: 15px;
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: #333;
+            white-space: nowrap;
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+        }
+
+        section {
+            padding: 20px;
+            display: none;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        section.active { display: block; }
+
+        /* --- CATALOGO --- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .monster-card {
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #444;
+            transition: transform 0.3s;
+        }
+
+        .monster-card:hover { transform: scale(1.05); }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #333;
+        }
+
+        .card-info { padding: 10px; text-align: center; }
+
+        /* --- RANKING --- */
+        .rank-table {
+            width: 100%;
+            background: #1e1e1e;
+            border-radius: 10px;
+            border-collapse: collapse;
+        }
+
+        .rank-table th, .rank-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        /* --- ADMIN --- */
+        .admin-zone {
+            border: 2px solid var(--danger);
+            padding: 20px;
+            border-radius: 15px;
+            background: #2a1010;
+        }
+
         .hidden { display: none !important; }
-        .user-bar { background: #111; color: white; padding: 15px; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-        
-        header { background: linear-gradient(135deg, #222, #444); color: white; padding: 30px; text-align: center; }
-        .nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
-        .nav button { width: auto; background: rgba(255,255,255,0.2); color: white; }
-        .nav button.active { background: var(--azul); }
 
-        section { max-width: 900px; margin: 20px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); display: none; }
-        section.active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
-
-        /* RANKING TABLE */
-        .ranking-table { width: 100%; border-collapse: collapse; }
-        .ranking-table th { text-align: left; background: #eee; padding: 10px; }
-        .ranking-table td { padding: 10px; border-bottom: 1px solid #eee; }
-        .rank-1 { color: #b49b00; font-weight: bold; background: #fffde7; }
-        
-        /* ADMIN PANEL */
-        .admin-box { border: 2px dashed var(--rojo); padding: 15px; background: #fff5f5; margin-top: 20px; border-radius: 8px; }
-        
-        /* NOTIFICACIONES */
-        #toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 15px; border-radius: 8px; display: none; z-index: 999; }
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            padding: 12px 25px;
+            border-radius: 30px;
+            display: none;
+            z-index: 2000;
+        }
     </style>
 </head>
 <body>
 
     <div id="toast"></div>
 
-    <div id="auth-screen" class="auth-container">
-        <h1 style="color:var(--azul)">MONSTER TCG</h1>
-        <p>Sistema Online v4.0</p>
-        
-        <div id="login-form">
-            <input type="text" id="login-user" placeholder="Usuario">
-            <input type="password" id="login-pass" placeholder="Contraseña">
-            <button class="btn-primary" onclick="auth.login()">Entrar</button>
-            <p onclick="ui.toggleAuth()" style="cursor:pointer; color:var(--azul); text-decoration:underline">Crear cuenta nueva</p>
-        </div>
-
-        <div id="reg-form" class="hidden">
-            <input type="text" id="reg-user" placeholder="Nuevo Usuario">
-            <input type="password" id="reg-pass" placeholder="Nueva Contraseña">
-            <button class="btn-primary" style="background:var(--verde)" onclick="auth.register()">Registrarse</button>
-            <p onclick="ui.toggleAuth()" style="cursor:pointer; color:#666">Volver al login</p>
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h1 style="color:var(--primary)">MONSTER TCG</h1>
+            <div id="login-box">
+                <input type="text" id="user" placeholder="Usuario">
+                <input type="password" id="pass" placeholder="Contraseña">
+                <button class="btn-main" onclick="Auth.handle('login')">Entrar</button>
+                <p onclick="document.getElementById('login-box').classList.add('hidden'); document.getElementById('reg-box').classList.remove('hidden')">¿No tienes cuenta? Regístrate</p>
+            </div>
+            <div id="reg-box" class="hidden">
+                <input type="text" id="r-user" placeholder="Nuevo Usuario">
+                <input type="password" id="r-pass" placeholder="Nueva Contraseña">
+                <button class="btn-main" style="background:var(--success)" onclick="Auth.handle('register')">Crear Cuenta</button>
+                <p onclick="document.getElementById('reg-box').classList.add('hidden'); document.getElementById('login-box').classList.remove('hidden')">Volver</p>
+            </div>
         </div>
     </div>
 
-    <div id="app-screen" class="hidden">
-        <div class="user-bar">
-            <div>👤 <span id="my-user">...</span> <span id="my-lvl" style="background:var(--azul); padding:2px 8px; border-radius:10px; font-size:12px">Lvl 1</span></div>
-            <div>⭐ <span id="my-xp">0</span> XP <button onclick="location.reload()" style="padding:2px 10px; font-size:12px; width:auto; background:var(--rojo); margin-left:10px">Salir</button></div>
+    <div id="app" class="hidden">
+        <div class="top-bar">
+            <div>🔥 <span id="my-name">...</span></div>
+            <div>⭐ Lvl <span id="my-lvl">1</span> | <span id="my-xp">0</span> XP</div>
         </div>
 
-        <header>
-            <h1>Comunidad TCG Online</h1>
-            <div class="nav">
-                <button onclick="ui.show('ranking')" class="active">🏆 Ranking</button>
-                <button onclick="ui.show('codigos')">🎟️ Códigos</button>
-                <button onclick="ui.show('noticias')">📰 Noticias</button>
-                <button onclick="ui.show('admin')" id="btn-admin" class="hidden" style="background:var(--rojo)">🛠️ Admin</button>
-            </div>
-        </header>
+        <div class="nav-menu">
+            <div class="nav-item active" onclick="UI.tab('inicio')">Inicio</div>
+            <div class="nav-item" onclick="UI.tab('catalogo')">Catálogo</div>
+            <div class="nav-item" onclick="UI.tab('ranking')">Ranking</div>
+            <div class="nav-item" onclick="UI.tab('canje')">Canjear</div>
+            <div id="admin-nav" class="nav-item hidden" onclick="UI.tab('admin')" style="color:red">Admin</div>
+        </div>
 
-        <section id="ranking" class="active">
-            <h2>🏆 Ranking en Tiempo Real</h2>
-            <p>Compite con tus amigos. Se actualiza solo.</p>
-            <table class="ranking-table">
-                <thead><tr><th>#</th><th>Jugador</th><th>Nivel</th><th>XP</th></tr></thead>
-                <tbody id="ranking-list"></tbody>
+        <section id="inicio" class="active">
+            <h2>📰 Noticias de la Comunidad</h2>
+            <div id="news-feed">Cargando noticias...</div>
+        </section>
+
+        <section id="catalogo">
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <h2>🃏 Catálogo de Cartas</h2>
+                <input type="text" id="search-card" placeholder="Buscar carta..." onkeyup="Game.filterCards()" style="width:200px">
+            </div>
+            <div class="card-grid" id="card-list">
+                </div>
+        </section>
+
+        <section id="ranking">
+            <h2>🏆 Top Jugadores Online</h2>
+            <table class="rank-table">
+                <thead>
+                    <tr><th>Pos</th><th>Usuario</th><th>Nivel</th><th>XP</th></tr>
+                </thead>
+                <tbody id="rank-body"></tbody>
             </table>
         </section>
 
-        <section id="codigos">
-            <h2>🎟️ Canjear Código</h2>
-            <div style="display:flex; gap:10px">
-                <input id="code-input" placeholder="Escribe el código aquí">
-                <button class="btn-primary" onclick="game.redeem()">Canjear</button>
+        <section id="canje">
+            <h2>🎟️ Centro de Canje</h2>
+            <div class="auth-card" style="margin:auto; background:#222">
+                <input type="text" id="claim-code" placeholder="Introduce código">
+                <button class="btn-main" onclick="Game.redeem()">Canjear Código</button>
             </div>
-            <p id="code-msg" style="margin-top:10px; color:#666"></p>
-        </section>
-
-        <section id="noticias">
-            <h2>📰 Noticias</h2>
-            <div id="news-list">Cargando noticias...</div>
         </section>
 
         <section id="admin">
-            <h2>🛠️ Panel de Administrador</h2>
-            <div class="admin-box">
-                <h3>➕ Crear Código de XP</h3>
-                <input id="new-code-name" placeholder="Ej: REGALO2026">
-                <input id="new-code-val" type="number" placeholder="Cantidad XP (ej: 50)">
-                <button class="btn-primary" onclick="admin.createCode()">Crear Código</button>
-            </div>
-            <div class="admin-box" style="border-color: #333; background: #eee;">
-                <h3>📰 Publicar Noticia</h3>
-                <input id="new-news-title" placeholder="Título">
-                <textarea id="new-news-body" style="width:100%; margin:10px 0" placeholder="Contenido"></textarea>
-                <button class="btn-primary" onclick="admin.postNews()">Publicar</button>
-            </div>
-            <div class="admin-box">
-                <h3>👑 Gestión de Staff</h3>
-                <input id="new-admin-name" placeholder="Usuario para hacer Admin">
-                <button class="btn-primary" style="background:var(--dorado); color:black" onclick="admin.makeAdmin()">Dar Permisos</button>
+            <div class="admin-zone">
+                <h2>🛠️ Panel de Control Maestro</h2>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px">
+                    <div>
+                        <h3>Añadir Carta</h3>
+                        <input id="new-card-name" placeholder="Nombre">
+                        <input id="new-card-img" placeholder="URL Imagen">
+                        <input id="new-card-type" placeholder="Tipo (Fuego, Agua...)">
+                        <button class="btn-main" onclick="Admin.addCard()">Publicar Carta</button>
+                    </div>
+                    <div>
+                        <h3>Crear Código XP</h3>
+                        <input id="new-code" placeholder="Código (ej: MONSTER2026)">
+                        <input id="new-val" type="number" placeholder="Valor XP">
+                        <button class="btn-main" onclick="Admin.addCode()">Crear Código</button>
+                    </div>
+                </div>
+                <hr style="margin:30px 0; border:1px solid #444">
+                <h3>Publicar Noticia</h3>
+                <input id="news-title" placeholder="Título">
+                <textarea id="news-text" style="width:100%; height:100px; background:#111; color:white; border-radius:10px; padding:10px" placeholder="Contenido..."></textarea>
+                <button class="btn-main" onclick="Admin.addNews()">Enviar Noticia</button>
             </div>
         </section>
     </div>
@@ -133,7 +272,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // 1. CONFIGURACIÓN FIREBASE (Usa la tuya o esta de prueba)
+        // 1. CONFIGURACIÓN (Tus datos de Firebase)
         const firebaseConfig = {
             apiKey: "AIzaSyArz-RACSX-XJYv_kRmx22WcGHjA2-hflA",
             authDomain: "comunidadcartas.firebaseapp.com",
@@ -142,208 +281,190 @@
             messagingSenderId: "645947206318",
             appId: "1:645947206318:web:07ca349989b8f70f435b3f"
         };
-        
-        // Inicializar
+
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        
-        // Variables globales
         let currentUser = null;
-        let myDocRef = null;
+        let myDocId = null;
 
-        // ================= SISTEMA DE UI =================
-        const ui = {
-            toast: (msg) => {
+        // 2. SISTEMA DE UI
+        const UI = {
+            toast: (text) => {
                 const t = document.getElementById('toast');
-                t.innerText = msg; t.style.display = 'block';
+                t.innerText = text; t.style.display = 'block';
                 setTimeout(() => t.style.display = 'none', 3000);
             },
-            toggleAuth: () => {
-                document.getElementById('login-form').classList.toggle('hidden');
-                document.getElementById('reg-form').classList.toggle('hidden');
-            },
-            show: (id) => {
+            tab: (id) => {
                 document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
                 document.getElementById(id).classList.add('active');
-                document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 event.target.classList.add('active');
             }
         };
 
-        // ================= AUTENTICACIÓN =================
-        const auth = {
-            register: async () => {
-                const u = document.getElementById('reg-user').value.trim();
-                const p = document.getElementById('reg-pass').value.trim();
-                if(!u || !p) return ui.toast("Faltan datos");
+        // 3. AUTENTICACIÓN
+        const Auth = {
+            handle: async (type) => {
+                const u = document.getElementById(type === 'login' ? 'user' : 'r-user').value.toLowerCase().trim();
+                const p = document.getElementById(type === 'login' ? 'pass' : 'r-pass').value;
 
-                // Verificar si existe en la Nube
-                const snap = await db.collection('users').where('username', '==', u).get();
-                if(!snap.empty) return ui.toast("Usuario ya existe");
+                if(!u || !p) return UI.toast("Rellena todos los campos");
 
-                // Crear usuario en Nube
-                await db.collection('users').add({
-                    username: u, password: p, xp: 0, level: 1, role: 'user', 
-                    redeemedCodes: [], lastLogin: null
-                });
-                
-                ui.toast("¡Cuenta creada! Inicia sesión.");
-                ui.toggleAuth();
+                const usersRef = db.collection('users');
+                const snap = await usersRef.where('user', '==', u).get();
+
+                if(type === 'register') {
+                    if(!snap.empty) return UI.toast("Este usuario ya existe");
+                    const newUser = {
+                        user: u, pass: p, xp: 0, lvl: 1, 
+                        role: 'user', usedCodes: [], 
+                        created: Date.now()
+                    };
+                    await usersRef.add(newUser);
+                    UI.toast("¡Cuenta creada! Ya puedes entrar.");
+                    location.reload();
+                } else {
+                    if(snap.empty || snap.docs[0].data().pass !== p) return UI.toast("Datos incorrectos");
+                    myDocId = snap.docs[0].id;
+                    currentUser = snap.docs[0].data();
+                    Auth.launch();
+                }
             },
-
-            login: async () => {
-                const u = document.getElementById('login-user').value.trim();
-                const p = document.getElementById('login-pass').value.trim();
+            launch: () => {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+                if(currentUser.role === 'admin') document.getElementById('admin-nav').classList.remove('hidden');
                 
-                // Buscar en la Nube
-                const snap = await db.collection('users').where('username', '==', u).where('password', '==', p).get();
-                
-                if(snap.empty) return ui.toast("Usuario o contraseña incorrectos");
+                // Escuchar datos del usuario en tiempo real
+                db.collection('users').doc(myDocId).onSnapshot(doc => {
+                    const d = doc.data();
+                    document.getElementById('my-name').innerText = d.user.toUpperCase();
+                    document.getElementById('my-xp').innerText = d.xp;
+                    document.getElementById('my-lvl').innerText = d.lvl;
+                });
 
-                // Guardar referencia al usuario actual
-                const doc = snap.docs[0];
-                currentUser = doc.data();
-                myDocRef = db.collection('users').doc(doc.id);
-
-                ui.toast("¡Bienvenido " + currentUser.username + "!");
-                app.start();
+                Game.init();
             }
         };
 
-        // ================= LÓGICA DEL JUEGO =================
-        const app = {
-            start: () => {
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('app-screen').classList.remove('hidden');
-                
-                // Si soy admin, mostrar panel
-                if(currentUser.role === 'admin' || currentUser.role === 'superadmin') {
-                    document.getElementById('btn-admin').classList.remove('hidden');
-                }
-
-                // Escuchar mis propios cambios (para actualizar XP en barra)
-                myDocRef.onSnapshot(doc => {
-                    currentUser = doc.data();
-                    document.getElementById('my-user').innerText = currentUser.username;
-                    document.getElementById('my-xp').innerText = currentUser.xp;
-                    document.getElementById('my-lvl').innerText = "Nvl " + currentUser.level;
-                });
-
-                // Cargar Ranking en Tiempo Real
-                app.listenRanking();
-                app.listenNews();
+        // 4. LÓGICA DE JUEGO
+        const Game = {
+            init: () => {
+                Game.loadCards();
+                Game.loadRanking();
+                Game.loadNews();
             },
-
-            listenRanking: () => {
-                // Esto escucha cambios en TODA la colección de usuarios
-                db.collection('users').orderBy('xp', 'desc').limit(50).onSnapshot(snap => {
-                    const list = document.getElementById('ranking-list');
+            loadCards: () => {
+                db.collection('cards').onSnapshot(snap => {
+                    const list = document.getElementById('card-list');
                     list.innerHTML = "";
+                    snap.forEach(doc => {
+                        const c = doc.data();
+                        list.innerHTML += `
+                            <div class="monster-card" data-name="${c.name}">
+                                <img src="${c.img}" class="card-img" onerror="this.src='https://via.placeholder.com/150'">
+                                <div class="card-info">
+                                    <h4 style="margin:5px 0">${c.name}</h4>
+                                    <span style="font-size:12px; color:var(--primary)">${c.type}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+            },
+            filterCards: () => {
+                const q = document.getElementById('search-card').value.toLowerCase();
+                document.querySelectorAll('.monster-card').forEach(c => {
+                    c.style.display = c.dataset.name.toLowerCase().includes(q) ? 'block' : 'none';
+                });
+            },
+            loadRanking: () => {
+                db.collection('users').orderBy('xp', 'desc').limit(20).onSnapshot(snap => {
+                    const body = document.getElementById('rank-body');
+                    body.innerHTML = "";
                     let pos = 1;
                     snap.forEach(doc => {
                         const u = doc.data();
-                        let rowClass = pos === 1 ? 'rank-1' : '';
-                        let badge = u.role === 'admin' || u.role === 'superadmin' ? '🛡️' : '';
-                        
-                        list.innerHTML += `
-                            <tr class="${rowClass}">
-                                <td>#${pos}</td>
-                                <td>${u.username} ${badge}</td>
-                                <td>${u.level}</td>
-                                <td><b>${u.xp}</b></td>
+                        body.innerHTML += `
+                            <tr>
+                                <td>${pos === 1 ? '🥇' : pos}</td>
+                                <td>${u.user} ${u.role === 'admin' ? '🛡️' : ''}</td>
+                                <td>${u.lvl}</td>
+                                <td>${u.xp}</td>
                             </tr>
                         `;
                         pos++;
                     });
                 });
             },
-
-            listenNews: () => {
+            loadNews: () => {
                 db.collection('news').orderBy('date', 'desc').onSnapshot(snap => {
-                    const div = document.getElementById('news-list');
-                    div.innerHTML = "";
+                    const feed = document.getElementById('news-feed');
+                    feed.innerHTML = "";
                     snap.forEach(doc => {
                         const n = doc.data();
-                        div.innerHTML += `
-                            <div style="border-bottom:1px solid #eee; padding:15px 0">
-                                <h3 style="color:var(--azul); margin:0">${n.title}</h3>
-                                <small>${new Date(n.date).toLocaleDateString()}</small>
-                                <p>${n.body}</p>
+                        feed.innerHTML += `
+                            <div style="background:#222; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid var(--primary)">
+                                <h3 style="margin:0">${n.title}</h3>
+                                <p style="color:#aaa; font-size:14px">${n.body}</p>
                             </div>
                         `;
                     });
                 });
-            }
-        };
-
-        const game = {
+            },
             redeem: async () => {
-                const codeTxt = document.getElementById('code-input').value.trim();
+                const codeTxt = document.getElementById('claim-code').value.trim();
                 if(!codeTxt) return;
 
-                // 1. Buscar el código en la nube
                 const codeSnap = await db.collection('codes').where('name', '==', codeTxt).get();
+                if(codeSnap.empty) return UI.toast("Código inválido");
+
+                const codeData = codeSnap.docs[0].data();
                 
-                if(codeSnap.empty) return ui.toast("Código inválido");
+                // Verificar si ya se usó (localmente primero por velocidad)
+                const userDoc = await db.collection('users').doc(myDocId).get();
+                const userData = userDoc.data();
 
-                const codeDoc = codeSnap.docs[0];
-                const codeData = codeDoc.data();
-
-                // 2. Verificar si ya lo usé
-                if(currentUser.redeemedCodes && currentUser.redeemedCodes.includes(codeTxt)) {
-                    return ui.toast("Ya usaste este código");
+                if(userData.usedCodes && userData.usedCodes.includes(codeTxt)) {
+                    return UI.toast("Ya canjeaste este código antes");
                 }
 
-                // 3. Aplicar premio (Transacción segura)
-                const newXP = currentUser.xp + codeData.value;
+                const newXP = userData.xp + parseInt(codeData.val);
                 const newLvl = Math.floor(newXP / 100) + 1;
-                
-                // Actualizar mi usuario
-                await myDocRef.update({
+
+                await db.collection('users').doc(myDocId).update({
                     xp: newXP,
-                    level: newLvl,
-                    redeemedCodes: firebase.firestore.FieldValue.arrayUnion(codeTxt)
+                    lvl: newLvl,
+                    usedCodes: firebase.firestore.FieldValue.arrayUnion(codeTxt)
                 });
 
-                ui.toast(`¡Código canjeado! Ganaste +${codeData.value} XP`);
-                document.getElementById('code-input').value = "";
+                UI.toast(`¡Éxito! +${codeData.val} XP añadidos`);
+                document.getElementById('claim-code').value = "";
             }
         };
 
-        // ================= ADMIN (Escribe en la Nube) =================
-        const admin = {
-            createCode: async () => {
-                const name = document.getElementById('new-code-name').value.trim();
-                const val = parseInt(document.getElementById('new-code-val').value);
-                
-                if(!name || !val) return;
-                
-                await db.collection('codes').add({ name: name, value: val });
-                ui.toast("Código creado en la nube");
+        // 5. ADMINISTRACIÓN
+        const Admin = {
+            addCard: async () => {
+                const name = document.getElementById('new-card-name').value;
+                const img = document.getElementById('new-card-img').value;
+                const type = document.getElementById('new-card-type').value;
+                await db.collection('cards').add({ name, img, type });
+                UI.toast("Carta añadida al catálogo");
             },
-
-            postNews: async () => {
-                const title = document.getElementById('new-news-title').value;
-                const body = document.getElementById('new-news-body').value;
-                
-                await db.collection('news').add({
-                    title: title, body: body, date: Date.now()
-                });
-                ui.toast("Noticia publicada");
+            addCode: async () => {
+                const name = document.getElementById('new-code').value;
+                const val = document.getElementById('new-val').value;
+                await db.collection('codes').add({ name, val });
+                UI.toast("Código de regalo activo");
             },
-            
-            makeAdmin: async () => {
-                const targetName = document.getElementById('new-admin-name').value.trim();
-                const snap = await db.collection('users').where('username', '==', targetName).get();
-                
-                if(snap.empty) return ui.toast("Usuario no encontrado");
-                
-                snap.docs[0].ref.update({ role: 'admin' });
-                ui.toast(targetName + " ahora es Admin");
+            addNews: async () => {
+                const title = document.getElementById('news-title').value;
+                const body = document.getElementById('news-text').value;
+                await db.collection('news').add({ title, body, date: Date.now() });
+                UI.toast("Noticia publicada");
             }
         };
     </script>
 </body>
 </html>
-
-

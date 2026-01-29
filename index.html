@@ -143,19 +143,31 @@ h3{margin-top:20px; color: #444;}
             </div>
     </section>
 
-    <section id="ranking">
-        <h2>🏆 Ranking de Jugadores</h2>
-        <div id="winner-banner" class="winner-banner hidden">
-            👑 ¡GLORIA ETERNA! 👑<br>
-            El ganador del mes pasado fue: <strong id="winner-name"></strong><br>
-            <small>La recompensa ha sido enviada.</small>
-        </div>
-        <p>Gana XP participando. El Ranking se reinicia cada mes.</p>
-        <table class="ranking-table">
-            <thead><tr><th>#</th><th>Usuario</th><th>Nivel</th><th>XP</th></tr></thead>
-            <tbody id="ranking-list"></tbody>
-        </table>
-    </section>
+    <section id="ranking" class="active">
+  <h2>🏆 Ranking en tiempo real</h2>
+  <div id="ranking"></div>
+</section>
+
+<section id="encuestas">
+  <h2>📊 Encuesta</h2>
+  <p id="pregunta"></p>
+  <button onclick="votar('si')">👍 Sí</button>
+  <button onclick="votar('no')">👎 No</button>
+  <p id="resultado"></p>
+</section>
+
+<section id="codigos">
+  <h2>🔑 Código</h2>
+  <input id="codigoInput" placeholder="ABC123">
+  <button onclick="usarCodigo()">Usar</button>
+  <p id="msg"></p>
+</section>
+
+<section id="anuncios">
+  <h2>📢 Anuncios</h2>
+  <div id="anuncios"></div>
+</section>
+
 
     <section id="encuestas">
         <h2>📊 Encuestas de la Comunidad</h2>
@@ -266,21 +278,105 @@ h3{margin-top:20px; color: #444;}
 
 <script>
 /**
- * CONFIGURACIÓN FIREBASE AÑADIDA
+ * CONFIGURACIÓN FIREBASE (NO TOCAR)
  */
 const firebaseConfig = {
   apiKey: "AIzaSyArz-RACSX-XJYv_kRmx22WcGHjA2-hflA",
-  authDomain: "comuniadcartas.firebaseapp.com",
-  projectId: "comuniadcartas",
-  storageBucket: "comuniadcartas.firebasestorage.app",
+  authDomain: "comunidadcartas.firebaseapp.com",
+  projectId: "comunidadcartas",
+  storageBucket: "comunidadcartas.appspot.com",
   messagingSenderId: "645947206318",
   appId: "1:645947206318:web:07ca349989b8f70f435b3f",
   measurementId: "G-N48XZ2YCZ"
 };
+
+// INICIAR FIREBASE
 firebase.initializeApp(firebaseConfig);
+
+// SERVICIOS
+const db = firebase.firestore();
+const auth = firebase.auth();
+</script>
+<script>
+// 🔴 RANKING TIEMPO REAL
+db.collection("ranking")
+  .orderBy("puntos", "desc")
+  .onSnapshot(snap => {
+    const div = document.getElementById("ranking");
+    if (!div) return;
+    div.innerHTML = "";
+    snap.forEach(doc => {
+      const d = doc.data();
+      div.innerHTML += `<p>🏆 ${d.nombre} — ${d.puntos} pts</p>`;
+    });
+  });
+
+// 📊 ENCUESTA TIEMPO REAL
+const encuesta = db.collection("encuestas").doc("principal");
+
+encuesta.onSnapshot(doc => {
+  if (!doc.exists) return;
+  const d = doc.data();
+  document.getElementById("pregunta").innerText = d.pregunta;
+  document.getElementById("resultado").innerText = `👍 ${d.si} | 👎 ${d.no}`;
+});
+
+function votar(op) {
+  encuesta.update({
+    [op]: firebase.firestore.FieldValue.increment(1)
+  });
+}
+
+// 🔑 CÓDIGOS
+function usarCodigo() {
+  const code = document.getElementById("codigoInput").value.trim();
+  if (!code) return alert("Pon un código");
+
+  const ref = db.collection("codigos").doc(code);
+  ref.get().then(doc => {
+    if (!doc.exists) return alert("Código inválido");
+    if (doc.data().usado) return alert("Ya usado");
+    ref.update({ usado: true });
+    alert("Código correcto");
+  });
+}
+
+// 📢 ANUNCIOS
+db.collection("anuncios")
+  .where("activo", "==", true)
+  .onSnapshot(snap => {
+    const div = document.getElementById("anuncios");
+    if (!div) return;
+    div.innerHTML = "";
+    snap.forEach(doc => {
+      div.innerHTML += `<p>📢 ${doc.data().texto}</p>`;
+    });
+  });
+</script>
+
+/**
+ * CONFIGURACIÓN FIREBASE CORRECTA (NO TOCAR)
+ */
+const firebaseConfig = {
+  apiKey: "AIzaSyArz-RACSX-XJYv_kRmx22WcGHjA2-hflA",
+  authDomain: "comunidadcartas.firebaseapp.com",
+  projectId: "comunidadcartas",
+  storageBucket: "comunidadcartas.appspot.app",
+  messagingSenderId: "645947206318",
+  appId: "1:645947206318:web:07ca349989b8f70f435b3f",
+  measurementId: "G-N48XZ2YCZ"
+};
+
+// INICIALIZAR FIREBASE
+firebase.initializeApp(firebaseConfig);
+
+// SERVICIOS
 const dbFirestore = firebase.firestore();
 const authFirebase = firebase.auth();
-console.log("Firebase conectado correctamente.");
+
+console.log("🔥 Firebase conectado CORRECTAMENTE");
+</script>
+
 
 /**
  * SISTEMA INTEGRAL TCG v3.1
@@ -643,4 +739,5 @@ app.init();
 </script>
 </body>
 </html>
+
 

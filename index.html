@@ -258,12 +258,33 @@ h3{margin-top:20px; color: #444;}
     </section>
 </div>
 
-<div class="footer">Comunidad independiente · Sistema v3.0</div>
+<div class="footer">Comunidad independiente · Sistema v3.1 (Firebase Configurada)</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
 <script>
 /**
- * SISTEMA INTEGRAL TCG v3
- * Admin Jerárquico + Noticias + XP Universal
+ * CONFIGURACIÓN FIREBASE AÑADIDA
+ */
+const firebaseConfig = {
+  apiKey: "AIzaSyArz-RACSX-XJYv_kRmx22WcGHjA2-hflA",
+  authDomain: "comuniadcartas.firebaseapp.com",
+  projectId: "comuniadcartas",
+  storageBucket: "comuniadcartas.firebasestorage.app",
+  messagingSenderId: "645947206318",
+  appId: "1:645947206318:web:07ca349989b8f70f435b3f",
+  measurementId: "G-N48XZ2YCZ"
+};
+firebase.initializeApp(firebaseConfig);
+const dbFirestore = firebase.firestore();
+const authFirebase = firebase.auth();
+console.log("Firebase conectado correctamente.");
+
+/**
+ * SISTEMA INTEGRAL TCG v3.1
+ * Modificaciones: Admin empieza en 0 XP y Guardado seguro.
  */
 
 const SUPER_ADMIN_USER = "ddxus";
@@ -274,19 +295,27 @@ const defaultDB = {
     codes: ["TCG-2026", "WELCOME"], 
     polls: [{id: 1, question: "¿Qué elemento prefieres?", options: [{txt:"Fuego", votes:0}, {txt:"Agua", votes:0}], active: true}],
     news: [
-        {id: 0, title: "¡Bienvenidos!", content: "Sistema de noticias activo. Atentos a las novedades.", date: "2026-01-28", author: "ddxus", img: ""}
+        {id: 0, title: "¡Bienvenidos!", content: "Sistema de noticias activo.", date: "2026-01-28", author: "ddxus", img: ""}
     ],
     lastResetMonth: new Date().getMonth(),
     lastMonthWinner: null
 };
 
+// Cargar DB local
 let db = JSON.parse(localStorage.getItem('tcgDB_v3')) || defaultDB;
 let currentUser = null;
 
+// Función segura de guardado
 function saveDB() {
     localStorage.setItem('tcgDB_v3', JSON.stringify(db));
-    renderAll();
+    // Aquí actualizamos la vista si hay cambios
+    if(currentUser) renderAll();
 }
+
+// Guardar al cerrar pestaña por seguridad
+window.addEventListener("beforeunload", function() {
+    if(currentUser) saveDB();
+});
 
 const app = {
     init: () => { logic.checkMonthlyReset(); },
@@ -304,7 +333,7 @@ const app = {
 
         const newUser = {
             username: u, password: p, xp: 0, level: 1,
-            role: 'user', // roles: 'user', 'admin' (El super admin es hardcoded o especial)
+            role: 'user', 
             redeemedCodes: [], votedPolls: [], lastLogin: null
         };
         db.users.push(newUser);
@@ -316,36 +345,50 @@ const app = {
     login: () => {
         const u = document.getElementById('login-user').value.trim();
         const p = document.getElementById('login-pass').value.trim();
+        let role = 'user';
 
-        // 1. Verificar si es SUPER ADMIN
+        // 1. LÓGICA DE LOGIN MEJORADA
+        // Comprobamos si las credenciales coinciden con el Super Admin
         if(u === SUPER_ADMIN_USER && p === SUPER_ADMIN_PASS) {
-            currentUser = {
-                username: "ddxus", xp: 99999, level: 100, 
-                role: 'superadmin', redeemedCodes: [], votedPolls:[]
-            };
-            // Intentar recuperar XP real si se guardó antes, sino usa defaults
-            const savedSuper = db.users.find(x => x.username === SUPER_ADMIN_USER);
-            if(savedSuper) currentUser = savedSuper;
-            else {
-                // Si es la primera vez, lo guardamos en DB para que acumule XP también
-                currentUser.role = 'superadmin'; // Asegurar rol
-                db.users.push(currentUser);
-                saveDB();
-            }
-            
-            alert("Bienvenido Gran Jefe (Super Admin).");
-            app.enterApp();
-            return;
+            role = 'superadmin';
         }
 
-        // 2. Verificar usuario normal o admin regular
-        const userFound = db.users.find(user => user.username === u && user.password === p);
+        // Buscamos si el usuario ya existe en la base de datos
+        let userFound = db.users.find(user => user.username === u);
+
+        // Si es Super Admin pero NO existe en la DB (primera vez o borrado), lo creamos con 0 XP
+        if(role === 'superadmin' && !userFound) {
+            userFound = {
+                username: SUPER_ADMIN_USER,
+                password: SUPER_ADMIN_PASS, // Nota: en prod usar hash
+                xp: 0,          // AHORA EMPIEZA EN 0 XP
+                level: 1,       // AHORA EMPIEZA EN NIVEL 1
+                role: 'superadmin', // Mantiene los poderes
+                redeemedCodes: [], 
+                votedPolls: [],
+                lastLogin: null
+            };
+            db.users.push(userFound); // Lo guardamos en la DB como un usuario más
+            saveDB();
+        } 
+        // Si es Super Admin y YA existe, verificamos contraseña (en este caso hardcodeada coincide)
+        else if (role === 'superadmin' && userFound) {
+            // Actualizamos el rol por si acaso se hubiera perdido, pero respetamos su XP guardada
+            userFound.role = 'superadmin';
+        }
+
+        // Verificación final de contraseña para usuarios normales
+        if(role !== 'superadmin') {
+             userFound = db.users.find(user => user.username === u && user.password === p);
+        }
+
+        // Si encontramos usuario válido
         if(userFound) {
             currentUser = userFound;
             logic.dailyLoginReward();
             app.enterApp();
         } else {
-            alert("Datos incorrectos.");
+            alert("Datos incorrectos o usuario no existe.");
         }
     },
 
@@ -366,21 +409,22 @@ const app = {
         if(currentUser.role === 'superadmin') {
             tools.classList.remove('hidden');
         } else {
-            tools.classList.add('hidden'); // Ocultar herramientas de super admin a otros
+            tools.classList.add('hidden'); 
         }
 
         renderAll();
     },
 
-    logout: () => { currentUser = null; location.reload(); },
+    logout: () => { 
+        if(currentUser) saveDB(); // GUARDAR ANTES DE SALIR
+        currentUser = null; 
+        location.reload(); 
+    },
 
     redeemCode: () => {
         const input = document.getElementById('code-input');
         const code = input.value.trim().toUpperCase();
         if(!code) return;
-        
-        // RESTRICCIÓN: Sub-Admins y Super Admin no necesitan códigos? 
-        // El usuario dijo "los admin pueden ganar xp". Así que permitimos canjear.
         
         if(currentUser.redeemedCodes.includes(code)) return alert("Ya usado.");
         
@@ -398,14 +442,14 @@ const app = {
 
 const logic = {
     addXP: (amount) => {
-        // AHORA TODOS PUEDEN GANAR XP (Admins incluidos)
         currentUser.xp += amount;
         currentUser.level = Math.floor(currentUser.xp / 100) + 1;
         
-        // Actualizar en DB
+        // Actualizar en el array principal de DB para que se guarde
         const idx = db.users.findIndex(u => u.username === currentUser.username);
         if(idx !== -1) db.users[idx] = currentUser;
-        saveDB();
+        
+        saveDB(); // Guardado automático tras ganar XP
         view.updateHeader();
     },
 
@@ -414,7 +458,7 @@ const logic = {
         if(currentUser.lastLogin !== today) {
             currentUser.lastLogin = today;
             alert("Login Diario: +10 XP");
-            logic.addXP(10);
+            logic.addXP(10); // Esto ya llama a saveDB
         }
     },
 
@@ -424,8 +468,7 @@ const logic = {
         if(poll) {
             poll.options[idx].votes++;
             currentUser.votedPolls.push(pollId);
-            logic.addXP(40);
-            saveDB();
+            logic.addXP(40); // Esto guarda todo
             alert("Voto: +40 XP");
         }
     },
@@ -437,7 +480,7 @@ const logic = {
                 const sorted = [...db.users].sort((a,b) => b.xp - a.xp);
                 db.lastMonthWinner = sorted[0].username;
             }
-            db.users.forEach(u => { u.xp = 0; u.votedPolls = []; });
+            db.users.forEach(u => { u.xp = 0; u.votedPolls = []; u.level = 1; });
             db.lastResetMonth = currentMonth;
             saveDB();
         }
@@ -466,7 +509,6 @@ const admin = {
     },
 
     postNews: () => {
-        // Permitido para 'admin' y 'superadmin'
         const title = document.getElementById('news-title').value;
         const body = document.getElementById('news-content').value;
         const img = document.getElementById('news-img').value;
@@ -483,7 +525,6 @@ const admin = {
             saveDB();
             alert("Noticia publicada.");
             view.renderNews();
-            // Limpiar campos
             document.getElementById('news-title').value = "";
             document.getElementById('news-content').value = "";
         } else {
@@ -504,7 +545,11 @@ const admin = {
     },
     
     forceReset: () => {
-        if(confirm("¿Resetear mes?")) { db.lastResetMonth = 99; logic.checkMonthlyReset(); location.reload(); }
+        if(confirm("¿Resetear mes? Esto pondrá a todos en 0 XP.")) { 
+            db.lastResetMonth = 99; // Forzar cambio
+            logic.checkMonthlyReset(); 
+            location.reload(); 
+        }
     }
 };
 
@@ -561,7 +606,6 @@ const view = {
             let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`;
             let rowClass = index < 3 ? `rank-${index+1}` : "";
             
-            // Distintivo visual en tabla
             let nameDisplay = u.username;
             if(u.role === 'superadmin') nameDisplay += " (👑)";
             if(u.role === 'admin') nameDisplay += " (🛡️)";
@@ -599,3 +643,4 @@ app.init();
 </script>
 </body>
 </html>
+

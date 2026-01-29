@@ -5,44 +5,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ComunidadCarta</title>
 
+<!-- ========================= -->
+<!--        ESTILOS            -->
+<!-- ========================= -->
 <style>
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* BODY */
 body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#0f172a;
-  color:white;
+    background:#0b0b0b;
+    color:#ffffff;
+    min-height:100vh;
 }
+
+/* HEADER */
 header{
-  background:#020617;
-  padding:15px;
-  text-align:center;
+    background:#111;
+    padding:20px;
+    text-align:center;
+    border-bottom:3px solid #00ffcc;
 }
-button{
-  padding:10px 16px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  background:#22c55e;
-  color:black;
-  font-weight:bold;
+
+header h1{
+    font-size:32px;
+    letter-spacing:2px;
 }
-button:hover{opacity:.85}
-input{
-  padding:10px;
-  width:90%;
-  max-width:300px;
-  border-radius:6px;
-  border:none;
+
+header p{
+    font-size:14px;
+    opacity:0.8;
 }
-.section{
-  display:none;
-  padding:20px;
+
+/* NAV */
+nav{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    background:#0f0f0f;
+    padding:10px;
+    border-bottom:1px solid #222;
 }
+
+nav button{
+    padding:12px 18px;
+    background:#1a1a1a;
+    color:#fff;
+    border:1px solid #00ffcc;
+    cursor:pointer;
+    border-radius:6px;
+    transition:0.2s;
+    font-size:14px;
+}
+
+nav button:hover{
+    background:#00ffcc;
+    color:#000;
+}
+
+/* MAIN */
+main{
+    padding:20px;
+}
+
+/* SECTIONS */
+section{
+    display:none;
+    animation:fade 0.3s ease-in-out;
+}
+
+section.active{
+    display:block;
+}
+
+/* CARDS */
 .card{
-  background:#020617;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:15px;
+    background:#121212;
+    border:1px solid #222;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:15px;
+    box-shadow:0 0 10px rgba(0,255,204,0.1);
+}
+
+/* TITLES */
+h2{
+    margin-bottom:10px;
+    color:#00ffcc;
+}
+
+/* INPUTS */
+input, textarea, select{
+    width:100%;
+    padding:10px;
+    margin:5px 0 10px 0;
+    background:#0d0d0d;
+    border:1px solid #333;
+    color:#fff;
+    border-radius:4px;
+}
+
+button.action{
+    background:#00ffcc;
+    color:#000;
+    padding:10px 15px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* RANKING */
+.rank-item{
+    display:flex;
+    justify-content:space-between;
+    padding:8px;
+    border-bottom:1px solid #222;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+    opacity:0.6;
+}
+
+/* ANIMATION */
+@keyframes fade{
+    from{opacity:0;}
+    to{opacity:1;}
 }
 </style>
 </head>
@@ -50,148 +148,208 @@ input{
 <body>
 
 <header>
-<h1>ComunidadCarta</h1>
-<p>Proyecto no oficial · Comunidad educativa</p>
+    <h1>COMUNIDADCARTA</h1>
+    <p>Proyecto pequeño, no oficial ni relacionado con ninguna marca</p>
 </header>
 
-<!-- LOGIN -->
-<div id="login" class="section" style="display:block">
-  <div class="card">
-    <h2>Entrar</h2>
-    <input id="userName" placeholder="Tu nombre">
-    <br><br>
-    <button onclick="entrar()">Entrar</button>
-  </div>
-</div>
+<nav>
+    <button onclick="showSection('inicio')">Inicio</button>
+    <button onclick="showSection('catalogo')">Catálogo</button>
+    <button onclick="showSection('ranking')">Ranking</button>
+    <button onclick="showSection('encuestas')">Encuestas</button>
+    <button onclick="showSection('codigos')">Códigos</button>
+    <button onclick="showSection('anuncios')">Anuncios</button>
+    <button onclick="showSection('admin')">Admin</button>
+</nav>
 
-<!-- MENU -->
-<div id="menu" class="section">
-  <button onclick="show('ranking')">🏆 Ranking</button>
-  <button onclick="show('encuestas')">📊 Encuestas</button>
-  <button onclick="show('codigos')">🎟️ Códigos</button>
-  <button onclick="show('anuncios')">📢 Anuncios</button>
-</div>
+<main>
 
-<!-- RANKING -->
-<div id="ranking" class="section">
-  <h2>🏆 Ranking en tiempo real</h2>
-  <div id="rankingList"></div>
-</div>
+<!-- ========================= -->
+<!--         INICIO            -->
+<!-- ========================= -->
+<section id="inicio" class="active">
+    <div class="card">
+        <h2>Bienvenido</h2>
+        <p>Escanea tus cartas, participa en encuestas, sube en el ranking y descubre recompensas.</p>
+    </div>
+</section>
 
-<!-- ENCUESTAS -->
-<div id="encuestas" class="section">
-  <h2>📊 Encuesta</h2>
-  <div class="card">
-    <p>¿Te gusta la comunidad?</p>
-    <button onclick="vote('si')">Sí</button>
-    <button onclick="vote('no')">No</button>
-    <p id="votes"></p>
-  </div>
-</div>
+<!-- ========================= -->
+<!--        CATALOGO           -->
+<!-- ========================= -->
+<section id="catalogo">
+    <div class="card">
+        <h2>Catálogo de Sobres</h2>
+        <p><b>TITAN</b> — 12 cartas comunes, 5 raras, 1 épica, posibilidad mítica, bonus XP</p>
+        <p><b>ALFA</b> — 8 comunes, 3 raras, bonus puntos ranking</p>
+        <p><b>OMEGA</b> — 15 cartas, evento especial, multiplicador x2</p>
+    </div>
+</section>
 
-<!-- CODIGOS -->
-<div id="codigos" class="section">
-  <h2>🎟️ Código</h2>
-  <input id="codeInput" placeholder="Escribe código">
-  <br><br>
-  <button onclick="redeem()">Canjear</button>
-  <p id="codeMsg"></p>
-</div>
+<!-- ========================= -->
+<!--        RANKING            -->
+<!-- ========================= -->
+<section id="ranking">
+    <div class="card">
+        <h2>Ranking Global (Tiempo Real)</h2>
+        <div id="ranking-list"></div>
+    </div>
+</section>
 
-<!-- ANUNCIOS -->
-<div id="anuncios" class="section">
-  <h2>📢 Anuncios</h2>
-  <div class="card">
-    <p>Bienvenido a ComunidadCarta</p>
-    <p>Proyecto pequeño · No afiliado a marcas</p>
-  </div>
-</div>
+<!-- ========================= -->
+<!--       ENCUESTAS           -->
+<!-- ========================= -->
+<section id="encuestas">
+    <div class="card">
+        <h2>Encuestas</h2>
+        <p>¿Te gusta el proyecto?</p>
+        <button class="action" onclick="vote('si')">Sí</button>
+        <button class="action" onclick="vote('no')">No</button>
+        <p id="encuesta-resultado"></p>
+    </div>
+</section>
 
-<script>
-/* ===== BASE LOCAL (NO SE ROMPE) ===== */
-let dbLocal = {
-  users: JSON.parse(localStorage.getItem("users")||"{}"),
-  votes: JSON.parse(localStorage.getItem("votes")||'{"si":0,"no":0}')
+<!-- ========================= -->
+<!--        CODIGOS            -->
+<!-- ========================= -->
+<section id="codigos">
+    <div class="card">
+        <h2>Canjear Código</h2>
+        <input type="text" id="codigoInput" placeholder="Ingresa tu código">
+        <button class="action" onclick="canjearCodigo()">Canjear</button>
+        <p id="codigoResultado"></p>
+    </div>
+</section>
+
+<!-- ========================= -->
+<!--        ANUNCIOS           -->
+<!-- ========================= -->
+<section id="anuncios">
+    <div class="card">
+        <h2>Anuncios</h2>
+        <div id="anuncios-list"></div>
+    </div>
+</section>
+
+<!-- ========================= -->
+<!--         ADMIN             -->
+<!-- ========================= -->
+<section id="admin">
+    <div class="card">
+        <h2>Panel Admin</h2>
+        <input type="text" id="adminUser" placeholder="Usuario">
+        <input type="password" id="adminPass" placeholder="Contraseña">
+        <button class="action" onclick="loginAdmin()">Entrar</button>
+        <p id="adminEstado"></p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    ComunidadCarta © 2026 — Uso educativo y comunitario
+</footer>
+
+<!-- ========================= -->
+<!--        SCRIPTS            -->
+<!-- ========================= -->
+<script type="module">
+
+/* ========================= */
+/*        FIREBASE            */
+/* ========================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT.firebaseapp.com",
+    databaseURL: "https://PROJECT-default-rtdb.firebaseio.com",
+    projectId: "PROJECT",
+    storageBucket: "PROJECT.appspot.com",
+    messagingSenderId: "000000",
+    appId: "APP_ID"
 };
 
-let currentUser = null;
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-/* ===== UTIL ===== */
-function save(){
-  localStorage.setItem("users", JSON.stringify(dbLocal.users));
-  localStorage.setItem("votes", JSON.stringify(dbLocal.votes));
-}
-
-/* ===== LOGIN ===== */
-function entrar(){
-  const name = document.getElementById("userName").value.trim();
-  if(!name) return alert("Escribe un nombre");
-
-  currentUser = name;
-
-  if(!dbLocal.users[name]){
-    dbLocal.users[name] = {points:0};
-  }
-
-  save();
-  document.getElementById("login").style.display="none";
-  document.getElementById("menu").style.display="block";
-  show("ranking");
-  renderRanking();
-}
-
-/* ===== NAV ===== */
-function show(id){
-  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-  document.getElementById("menu").style.display="block";
-  document.getElementById(id).style.display="block";
-}
-
-/* ===== RANKING ===== */
-function renderRanking(){
-  const list = document.getElementById("rankingList");
-  list.innerHTML="";
-  Object.entries(dbLocal.users)
-    .sort((a,b)=>b[1].points-a[1].points)
-    .forEach(([name,data],i)=>{
-      const div=document.createElement("div");
-      div.className="card";
-      div.innerText=`#${i+1} ${name} - ${data.points} pts`;
-      list.appendChild(div);
+/* ========================= */
+/*        NAVEGACION          */
+/* ========================= */
+window.showSection = function(id){
+    document.querySelectorAll("section").forEach(sec=>{
+        sec.classList.remove("active");
     });
+    document.getElementById(id).classList.add("active");
 }
 
-/* ===== ENCUESTAS ===== */
-function vote(type){
-  dbLocal.votes[type]++;
-  dbLocal.users[currentUser].points+=1;
-  save();
-  updateVotes();
-  renderRanking();
-}
-function updateVotes(){
-  document.getElementById("votes").innerText =
-   `Sí: ${dbLocal.votes.si} | No: ${dbLocal.votes.no}`;
-}
-updateVotes();
+/* ========================= */
+/*        RANKING             */
+/* ========================= */
+const rankingRef = ref(db, "ranking");
 
-/* ===== CODIGOS ===== */
-function redeem(){
-  const code = document.getElementById("codeInput").value;
-  if(code==="CARTA10"){
-    dbLocal.users[currentUser].points+=10;
-    save();
-    renderRanking();
-    document.getElementById("codeMsg").innerText="Código válido +10 pts";
-  }else{
-    document.getElementById("codeMsg").innerText="Código inválido";
-  }
+onValue(rankingRef, snapshot=>{
+    const data = snapshot.val() || {};
+    const list = document.getElementById("ranking-list");
+    list.innerHTML = "";
+    Object.values(data).sort((a,b)=>b.puntos-a.puntos).forEach(d=>{
+        const div = document.createElement("div");
+        div.className = "rank-item";
+        div.innerHTML = `<span>${d.nombre}</span><span>${d.puntos} pts</span>`;
+        list.appendChild(div);
+    });
+});
+
+/* ========================= */
+/*        ENCUESTAS           */
+/* ========================= */
+window.vote = function(opcion){
+    const r = ref(db, "encuestas/"+opcion);
+    set(r, Date.now());
+    document.getElementById("encuesta-resultado").innerText = "Voto enviado";
 }
+
+/* ========================= */
+/*        CODIGOS             */
+/* ========================= */
+window.canjearCodigo = function(){
+    const val = document.getElementById("codigoInput").value;
+    if(val.length < 4){
+        document.getElementById("codigoResultado").innerText = "Código inválido";
+        return;
+    }
+    document.getElementById("codigoResultado").innerText = "Código aceptado";
+}
+
+/* ========================= */
+/*        ANUNCIOS            */
+/* ========================= */
+const anunciosRef = ref(db,"anuncios");
+
+onValue(anunciosRef, snap=>{
+    const data = snap.val() || {};
+    const div = document.getElementById("anuncios-list");
+    div.innerHTML="";
+    Object.values(data).forEach(a=>{
+        div.innerHTML += `<p>📢 ${a.texto}</p>`;
+    });
+});
+
+/* ========================= */
+/*         ADMIN              */
+/* ========================= */
+window.loginAdmin = function(){
+    const u = document.getElementById("adminUser").value;
+    const p = document.getElementById("adminPass").value;
+    if(u==="admin" && p==="1234"){
+        document.getElementById("adminEstado").innerText="Acceso concedido";
+    }else{
+        document.getElementById("adminEstado").innerText="Acceso denegado";
+    }
+}
+
 </script>
 
 </body>
 </html>
-
-
-
-

@@ -3,741 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comunidad de Cartas & Noticias</title>
+<title>ComunidadCarta</title>
+
 <style>
-/* --- ESTILOS BASE --- */
-:root{--azul:#2c7be5;--oscuro:#1e1e1e;--gris:#f2f2f2;--dorado:#ffd700;--plata:#c0c0c0;--bronce:#cd7f32;--verde:#28a745;--rojo:#dc3545;}
-*{box-sizing:border-box}
-body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--gris);color:#222;padding-bottom:50px;}
-header{background:linear-gradient(135deg,#111,#333);color:white;padding:30px 20px;text-align:center;position:relative;}
-header h1{margin:0;font-size:2rem;}
-
-/* --- BARRA DE USUARIO --- */
-.user-bar {background: #000; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;}
-.xp-badge {background: var(--dorado); color: black; padding: 2px 8px; border-radius: 10px; font-weight: bold;}
-.level-badge {background: var(--azul); color: white; padding: 2px 8px; border-radius: 10px; margin-left:5px;}
-.role-badge {font-size: 0.8em; padding: 2px 5px; border-radius: 4px; margin-left: 5px;}
-.role-super {background: var(--dorado); color: black;}
-.role-admin {background: var(--rojo); color: white;}
-
-/* --- NAVEGACIÓN --- */
-.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
-button{background:var(--azul);border:none;padding:10px 16px;color:white;border-radius:6px;font-size:14px;cursor:pointer;transition:.2s; font-weight: 600;}
-button:hover{background:#1a5fd0;transform:translateY(-2px)}
-button.secondary {background: #6c757d;}
-button.logout {background: var(--rojo);}
-button.legal {background: #333;}
-
-/* --- SECCIONES --- */
-section{max-width:1000px;margin:20px auto;background:white;padding:25px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,.1); display: none; animation: fadeIn 0.3s;}
-section.active {display: block;}
-@keyframes fadeIn {from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-
-h2{margin-top:0;color:#111; border-bottom: 2px solid var(--azul); padding-bottom: 10px; display: inline-block;}
-h3{margin-top:20px; color: #444;}
-
-/* --- NOTICIAS --- */
-.news-card {border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-bottom: 20px;}
-.news-header {padding: 15px; background: #f8f9fa; border-bottom: 1px solid #eee;}
-.news-title {margin: 0; font-size: 1.2rem; color: var(--azul);}
-.news-date {font-size: 0.8rem; color: #666; display: block; margin-top: 5px;}
-.news-body {padding: 15px; line-height: 1.6;}
-.news-img {max-width: 100%; height: auto; display: block; margin-top: 10px; border-radius: 4px;}
-
-/* --- LOGIN / REGISTRO --- */
-.auth-container {max-width: 400px; margin: 50px auto; text-align: center;}
-.form-group {margin-bottom: 15px; text-align: left;}
-.form-group label {display: block; margin-bottom: 5px; font-weight: bold;}
-.form-group input, .form-group textarea {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;}
-.auth-toggle {color: var(--azul); cursor: pointer; text-decoration: underline; margin-top: 10px; display: block;}
-
-/* --- RANKING --- */
-.ranking-table {width: 100%; border-collapse: collapse; margin-top: 20px;}
-.ranking-table th, .ranking-table td {padding: 12px; text-align: left; border-bottom: 1px solid #ddd;}
-.ranking-table th {background: #f8f9fa;}
-.rank-1 {color: var(--dorado); font-weight: bold; font-size: 1.1em;}
-.rank-2 {color: var(--plata); font-weight: bold;}
-.rank-3 {color: var(--bronce); font-weight: bold;}
-.winner-banner {background: linear-gradient(45deg, #ffd700, #ffaa00); color: black; padding: 20px; text-align: center; border-radius: 10px; margin-bottom: 20px; font-size: 1.2rem; display: none;}
-
-/* --- CÓDIGOS Y ENCUESTAS --- */
-.code-box {display: flex; gap: 10px; margin-top: 15px;}
-.code-box input {flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; text-transform: uppercase;}
-
-.poll-item {border: 1px solid #eee; padding: 15px; border-radius: 8px; margin-bottom: 15px;}
-.poll-option {background: #f1f1f1; margin: 8px 0; padding: 10px; border-radius: 5px; cursor: pointer; position: relative; overflow: hidden;}
-.poll-option:hover {background: #e9e9e9;}
-.poll-bar {position: absolute; left: 0; top: 0; bottom: 0; background: rgba(44, 123, 229, 0.2); z-index: 0; transition: width 0.5s;}
-.poll-text {position: relative; z-index: 1; display: flex; justify-content: space-between;}
-
-/* --- CATALOGO --- */
-.pack{border:1px solid #ddd;border-radius:14px;padding:20px;margin:20px 0;display:grid;grid-template-columns:1fr auto;gap:15px}
-.pack h3{margin:0}
-.pack ul{margin:10px 0 0 18px}
-.price{font-size:1.4rem;font-weight:bold;color:#1a5fd0;align-self:center}
-
-/* --- ADMIN PANEL --- */
-.admin-panel {border: 2px solid var(--rojo); padding: 20px; border-radius: 10px; background: #fff5f5;}
-.admin-section {margin-top: 20px; padding-top: 20px; border-top: 1px solid #ffcccc;}
-.restricted {opacity: 0.5; pointer-events: none; position: relative;}
-.restricted::after {content: "🔒 Solo Super Admin"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #333; color: white; padding: 5px 10px; border-radius: 5px;}
-
-/* --- OTRAS CLASES --- */
-.hidden {display: none !important;}
-.footer{text-align:center;font-size:13px;color:#555;padding:30px 15px}
-.legal-text {font-size: 0.8rem; color: #666; line-height: 1.5; background: #eee; padding: 15px; border-radius: 8px; margin-top: 20px;}
-@media(max-width:700px){.pack{grid-template-columns:1fr}.price{text-align:right}}
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+}
+header{
+  background:#020617;
+  padding:15px;
+  text-align:center;
+}
+button{
+  padding:10px 16px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#22c55e;
+  color:black;
+  font-weight:bold;
+}
+button:hover{opacity:.85}
+input{
+  padding:10px;
+  width:90%;
+  max-width:300px;
+  border-radius:6px;
+  border:none;
+}
+.section{
+  display:none;
+  padding:20px;
+}
+.card{
+  background:#020617;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
+}
 </style>
 </head>
+
 <body>
 
-<div id="auth-screen" class="auth-container">
-    <h1 style="color:var(--azul)">MONSTER TCG</h1>
-    <div id="login-form">
-        <h2>Iniciar Sesión</h2>
-        <div class="form-group"><label>Usuario</label><input type="text" id="login-user"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="login-pass"></div>
-        <button onclick="app.login()" style="width:100%">Entrar (+10 XP Diario)</button>
-        <span class="auth-toggle" onclick="app.toggleAuth('register')">¿No tienes cuenta? Regístrate</span>
-    </div>
-    <div id="register-form" class="hidden">
-        <h2>Crear Cuenta</h2>
-        <div class="form-group"><label>Usuario Nuevo</label><input type="text" id="reg-user"></div>
-        <div class="form-group"><label>Contraseña</label><input type="password" id="reg-pass"></div>
-        <button onclick="app.register()" style="width:100%">Registrarse</button>
-        <span class="auth-toggle" onclick="app.toggleAuth('login')">¿Ya tienes cuenta? Inicia sesión</span>
-    </div>
+<header>
+<h1>ComunidadCarta</h1>
+<p>Proyecto no oficial · Comunidad educativa</p>
+</header>
+
+<!-- LOGIN -->
+<div id="login" class="section" style="display:block">
+  <div class="card">
+    <h2>Entrar</h2>
+    <input id="userName" placeholder="Tu nombre">
+    <br><br>
+    <button onclick="entrar()">Entrar</button>
+  </div>
 </div>
 
-<div id="app-screen" class="hidden">
-    <div class="user-bar">
-        <div>
-            👤 <span id="display-user">Usuario</span> 
-            <span id="role-badge"></span>
-            <span class="level-badge" id="display-lvl">Nvl 1</span>
-        </div>
-        <div>
-            ⭐ <span id="display-xp">0</span> XP
-            <button class="logout" onclick="app.logout()" style="padding: 4px 10px; margin-left: 10px; font-size: 12px;">Salir</button>
-        </div>
-    </div>
+<!-- MENU -->
+<div id="menu" class="section">
+  <button onclick="show('ranking')">🏆 Ranking</button>
+  <button onclick="show('encuestas')">📊 Encuestas</button>
+  <button onclick="show('codigos')">🎟️ Códigos</button>
+  <button onclick="show('anuncios')">📢 Anuncios</button>
+</div>
 
-    <header>
-        <h1>Comunidad de Cartas</h1>
-        <p>Proyecto independiente para aprender a jugar, coleccionar cartas y conocer nuestros packs.</p>
-        <div class="nav">
-            <button onclick="view.show('noticias')">📰 Noticias</button>
-            <button onclick="view.show('ranking')">🏆 Ranking</button>
-            <button onclick="view.show('encuestas')">📊 Encuestas</button>
-            <button onclick="view.show('codigos')">🎟️ Códigos</button>
-            <button onclick="view.show('catalogo')">📦 Catálogo</button>
-            <button onclick="view.show('manual')" class="secondary">📘 Manual</button>
-            <button onclick="view.show('info')" class="legal">⚖️ Legal</button>
-            <button onclick="view.show('admin')" id="btn-admin" class="hidden" style="background:var(--rojo)">🛠️ Admin</button>
-        </div>
-    </header>
-
-    <section id="noticias" class="active">
-        <h2>📰 Noticias Oficiales</h2>
-        <div id="news-container">
-            </div>
-    </section>
-
-    <section id="ranking" class="active">
+<!-- RANKING -->
+<div id="ranking" class="section">
   <h2>🏆 Ranking en tiempo real</h2>
-  <div id="ranking"></div>
-</section>
-
-<section id="encuestas">
-  <h2>📊 Encuesta</h2>
-  <p id="pregunta"></p>
-  <button onclick="votar('si')">👍 Sí</button>
-  <button onclick="votar('no')">👎 No</button>
-  <p id="resultado"></p>
-</section>
-
-<section id="codigos">
-  <h2>🔑 Código</h2>
-  <input id="codigoInput" placeholder="ABC123">
-  <button onclick="usarCodigo()">Usar</button>
-  <p id="msg"></p>
-</section>
-
-<section id="anuncios">
-  <h2>📢 Anuncios</h2>
-  <div id="anuncios"></div>
-</section>
-
-
-    <section id="encuestas">
-        <h2>📊 Encuestas de la Comunidad</h2>
-        <p>Vota para ganar XP (+40 XP). ¡Tu opinión decide!</p>
-        <div id="polls-container"></div>
-    </section>
-
-    <section id="codigos">
-        <h2>🎟️ Canjear Código</h2>
-        <p>¿Compraste un pack? Introduce el código para ganar 50 XP.</p>
-        <div class="code-box">
-            <input type="text" id="code-input" placeholder="XXXX-XXXX-XXXX">
-            <button onclick="app.redeemCode()">Canjear</button>
-        </div>
-    </section>
-
-    <section id="catalogo">
-        <h2>📦 Catálogo detallado</h2>
-        <div class="pack"><div><h3>Sobre suelto</h3><ul><li>1 sobre armado</li></ul></div><div class="price">$15</div></div>
-        <div class="pack"><div><h3>Economic Pack</h3><ul><li>3 sobres + Promo</li></ul></div><div class="price">$45</div></div>
-        <div class="pack"><div><h3>Good Pack</h3><ul><li>5 sobres + Promo</li></ul></div><div class="price">$70</div></div>
-        <div class="pack"><div><h3>Mega Pack</h3><ul><li>10 sobres + Cupón</li></ul></div><div class="price">$140</div></div>
-        <div class="pack"><div><h3>Pack con Mapa 🧠</h3><ul><li>15 sobres + Mapa</li></ul></div><div class="price">$210</div></div>
-        <div class="pack"><div><h3>Hiper Pack</h3><ul><li>20 sobres + Stickers</li></ul></div><div class="price">$270</div></div>
-        <div class="pack"><div><h3>Premium Pack</h3><ul><li>30 sobres + Extras</li></ul></div><div class="price">$400</div></div>
-        <div class="pack"><div><h3>Final Pack 💀🔥</h3><ul><li>50 sobres + Mapa</li></ul></div><div class="price">$650</div></div>
-        <div class="pack"><div><h3>Titan Pack 🗿</h3><ul><li>80 sobres + Premium</li></ul></div><div class="price">$1200</div></div>
-        <div class="pack"><div><h3>Omega Titan Pack ⚡</h3><ul><li>120 sobres + Extras</li></ul></div><div class="price">$1800</div></div>
-        <div class="pack"><div><h3>Titan Mega Pack 🔥</h3><ul><li>140 sobres + Firmado</li></ul></div><div class="price">$2000</div></div>
-    </section>
-
-    <section id="manual">
-        <h2>📘 Manual de juego súper fácil</h2>
-        <p>Este manual explica un <b>juego de cartas coleccionables</b> de forma <b>muy sencilla</b>.</p>
-        <h3>🧩 ¿Qué es este juego?</h3>
-        <p>Es un juego donde dos personas usan cartas para hacer que sus criaturas peleen. Objetivo: <b>ganar premios</b>.</p>
-        <h3>📦 ¿Qué necesitas?</h3>
-        <ul><li>1 baraja de 60 cartas.</li><li>Una mesa.</li><li>Un amigo.</li></ul>
-        <h3>🃏 Tipos de cartas</h3>
-        <ul><li><b>Criaturas:</b> Pelean.</li><li><b>Apoyo:</b> Ayudan.</li><li><b>Energías:</b> Permiten atacar.</li></ul>
-        <h3>🎮 Preparación</h3>
-        <ol><li>Baraja 60 cartas.</li><li>Roba 7.</li><li>Elige 1 criatura básica (activa).</li><li>Pon premios (6 cartas).</li></ol>
-        <h3>🔄 Turno</h3>
-        <ol><li>Roba.</li><li>Banca.</li><li>Apoyo.</li><li>Energía.</li><li>Ataca.</li></ol>
-        <h3>⚔️ Combate y Ganar</h3>
-        <p>Si la fuerza rival llega a cero, tomas premio. Ganas si consigues 6 premios o el rival no tiene banca.</p>
-    </section>
-
-    <section id="info">
-        <h2>⚖️ Información Legal</h2>
-        <div class="legal-text">
-            <p><b>1. Proyecto Independiente:</b> Este sitio web es un proyecto educativo y recreativo. No estamos afiliados con ninguna corporación multinacional.</p>
-            <p><b>2. Propiedad Intelectual:</b> Marcas y logotipos pertenecen a sus dueños. Uso bajo normas de uso justo.</p>
-            <p><b>3. Sistema de XP:</b> Los puntos son virtuales y no tienen valor monetario.</p>
-            <p><b>4. Privacidad:</b> Datos almacenados localmente.</p>
-        </div>
-    </section>
-
-    <section id="admin">
-        <h2>🛠️ Panel de Control</h2>
-        <div class="admin-panel">
-            
-            <div id="super-admin-tools">
-                <h3>👑 Gestión de Staff (Solo Super Admin)</h3>
-                <div class="code-box">
-                    <input type="text" id="new-admin-user" placeholder="Usuario existente para hacer Admin">
-                    <button onclick="admin.addAdmin()" style="background:var(--dorado); color:black;">Nombrar Admin</button>
-                </div>
-                
-                <div class="admin-section">
-                    <h3>➕ Agregar Código XP (Solo Super Admin)</h3>
-                    <div class="code-box">
-                        <input type="text" id="new-code-val" placeholder="NUEVO CÓDIGO">
-                        <button onclick="admin.addCode()">Crear</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="admin-section">
-                <h3>📰 Publicar Noticia (Admins)</h3>
-                <input type="text" id="news-title" placeholder="Título de la noticia" style="width:100%; padding:10px; margin-bottom:10px;">
-                <textarea id="news-content" placeholder="Escribe aquí el contenido..." rows="3" style="width:100%; margin-bottom:10px;"></textarea>
-                <input type="text" id="news-img" placeholder="URL de imagen (Opcional)" style="width:100%; padding:10px; margin-bottom:10px;">
-                <button onclick="admin.postNews()">Publicar Noticia</button>
-            </div>
-
-            <div class="admin-section">
-                <h3>📝 Crear Encuesta (Admins)</h3>
-                <input type="text" id="poll-question" placeholder="Pregunta" style="width:100%; padding:10px; margin-bottom:10px;">
-                <input type="text" id="poll-opt1" placeholder="Opción 1" style="width:48%; padding:10px;">
-                <input type="text" id="poll-opt2" placeholder="Opción 2" style="width:48%; padding:10px;">
-                <button onclick="admin.createPoll()" style="margin-top:10px; width:100%;">Publicar Encuesta</button>
-            </div>
-            
-            <div class="admin-section" id="reset-tool">
-                <h3>⚠️ Gestión</h3>
-                <button onclick="admin.forceReset()" style="background:#444">Forzar Reinicio de Mes</button>
-            </div>
-        </div>
-    </section>
+  <div id="rankingList"></div>
 </div>
 
-<div class="footer">Comunidad independiente · Sistema v3.1 (Firebase Configurada)</div>
+<!-- ENCUESTAS -->
+<div id="encuestas" class="section">
+  <h2>📊 Encuesta</h2>
+  <div class="card">
+    <p>¿Te gusta la comunidad?</p>
+    <button onclick="vote('si')">Sí</button>
+    <button onclick="vote('no')">No</button>
+    <p id="votes"></p>
+  </div>
+</div>
 
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+<!-- CODIGOS -->
+<div id="codigos" class="section">
+  <h2>🎟️ Código</h2>
+  <input id="codeInput" placeholder="Escribe código">
+  <br><br>
+  <button onclick="redeem()">Canjear</button>
+  <p id="codeMsg"></p>
+</div>
+
+<!-- ANUNCIOS -->
+<div id="anuncios" class="section">
+  <h2>📢 Anuncios</h2>
+  <div class="card">
+    <p>Bienvenido a ComunidadCarta</p>
+    <p>Proyecto pequeño · No afiliado a marcas</p>
+  </div>
+</div>
 
 <script>
-/**
- * CONFIGURACIÓN FIREBASE (NO TOCAR)
- */
-const firebaseConfig = {
-  apiKey: "AIzaSyArz-RACSX-XJYv_kRmx22WcGHjA2-hflA",
-  authDomain: "comunidadcartas.firebaseapp.com",
-  projectId: "comunidadcartas",
-  storageBucket: "comunidadcartas.appspot.com",
-  messagingSenderId: "645947206318",
-  appId: "1:645947206318:web:07ca349989b8f70f435b3f",
-  measurementId: "G-N48XZ2YCZ"
+/* ===== BASE LOCAL (NO SE ROMPE) ===== */
+let dbLocal = {
+  users: JSON.parse(localStorage.getItem("users")||"{}"),
+  votes: JSON.parse(localStorage.getItem("votes")||'{"si":0,"no":0}')
 };
 
-// INICIAR FIREBASE
-firebase.initializeApp(firebaseConfig);
-
-// SERVICIOS
-const db = firebase.firestore();
-const auth = firebase.auth();
-</script>
-<script>
-// 🔴 RANKING TIEMPO REAL
-db.collection("ranking")
-  .orderBy("puntos", "desc")
-  .onSnapshot(snap => {
-    const div = document.getElementById("ranking");
-    if (!div) return;
-    div.innerHTML = "";
-    snap.forEach(doc => {
-      const d = doc.data();
-      div.innerHTML += `<p>🏆 ${d.nombre} — ${d.puntos} pts</p>`;
-    });
-  });
-
-// 📊 ENCUESTA TIEMPO REAL
-const encuesta = db.collection("encuestas").doc("principal");
-
-encuesta.onSnapshot(doc => {
-  if (!doc.exists) return;
-  const d = doc.data();
-  document.getElementById("pregunta").innerText = d.pregunta;
-  document.getElementById("resultado").innerText = `👍 ${d.si} | 👎 ${d.no}`;
-});
-
-function votar(op) {
-  encuesta.update({
-    [op]: firebase.firestore.FieldValue.increment(1)
-  });
-}
-
-// 🔑 CÓDIGOS
-function usarCodigo() {
-  const code = document.getElementById("codigoInput").value.trim();
-  if (!code) return alert("Pon un código");
-
-  const ref = db.collection("codigos").doc(code);
-  ref.get().then(doc => {
-    if (!doc.exists) return alert("Código inválido");
-    if (doc.data().usado) return alert("Ya usado");
-    ref.update({ usado: true });
-    alert("Código correcto");
-  });
-}
-
-// 📢 ANUNCIOS
-db.collection("anuncios")
-  .where("activo", "==", true)
-  .onSnapshot(snap => {
-    const div = document.getElementById("anuncios");
-    if (!div) return;
-    div.innerHTML = "";
-    snap.forEach(doc => {
-      div.innerHTML += `<p>📢 ${doc.data().texto}</p>`;
-    });
-  });
-</script>
-
-/**
- * CONFIGURACIÓN FIREBASE CORRECTA (NO TOCAR)
- */
-const firebaseConfig = {
-  apiKey: "AIzaSyArz-RACSX-XJYv_kRmx22WcGHjA2-hflA",
-  authDomain: "comunidadcartas.firebaseapp.com",
-  projectId: "comunidadcartas",
-  storageBucket: "comunidadcartas.appspot.app",
-  messagingSenderId: "645947206318",
-  appId: "1:645947206318:web:07ca349989b8f70f435b3f",
-  measurementId: "G-N48XZ2YCZ"
-};
-
-// INICIALIZAR FIREBASE
-firebase.initializeApp(firebaseConfig);
-
-// SERVICIOS
-const dbFirestore = firebase.firestore();
-const authFirebase = firebase.auth();
-
-console.log("🔥 Firebase conectado CORRECTAMENTE");
-</script>
-
-
-/**
- * SISTEMA INTEGRAL TCG v3.1
- * Modificaciones: Admin empieza en 0 XP y Guardado seguro.
- */
-
-const SUPER_ADMIN_USER = "ddxus";
-const SUPER_ADMIN_PASS = "102938475611556651029384756";
-
-const defaultDB = {
-    users: [],
-    codes: ["TCG-2026", "WELCOME"], 
-    polls: [{id: 1, question: "¿Qué elemento prefieres?", options: [{txt:"Fuego", votes:0}, {txt:"Agua", votes:0}], active: true}],
-    news: [
-        {id: 0, title: "¡Bienvenidos!", content: "Sistema de noticias activo.", date: "2026-01-28", author: "ddxus", img: ""}
-    ],
-    lastResetMonth: new Date().getMonth(),
-    lastMonthWinner: null
-};
-
-// Cargar DB local
-let db = JSON.parse(localStorage.getItem('tcgDB_v3')) || defaultDB;
 let currentUser = null;
 
-// Función segura de guardado
-function saveDB() {
-    localStorage.setItem('tcgDB_v3', JSON.stringify(db));
-    // Aquí actualizamos la vista si hay cambios
-    if(currentUser) renderAll();
+/* ===== UTIL ===== */
+function save(){
+  localStorage.setItem("users", JSON.stringify(dbLocal.users));
+  localStorage.setItem("votes", JSON.stringify(dbLocal.votes));
 }
 
-// Guardar al cerrar pestaña por seguridad
-window.addEventListener("beforeunload", function() {
-    if(currentUser) saveDB();
-});
+/* ===== LOGIN ===== */
+function entrar(){
+  const name = document.getElementById("userName").value.trim();
+  if(!name) return alert("Escribe un nombre");
 
-const app = {
-    init: () => { logic.checkMonthlyReset(); },
+  currentUser = name;
 
-    toggleAuth: (mode) => {
-        document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
-        document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
-    },
+  if(!dbLocal.users[name]){
+    dbLocal.users[name] = {points:0};
+  }
 
-    register: () => {
-        const u = document.getElementById('reg-user').value.trim();
-        const p = document.getElementById('reg-pass').value.trim();
-        if(!u || !p) return alert("Faltan datos");
-        if(db.users.find(user => user.username === u)) return alert("Usuario ocupado");
+  save();
+  document.getElementById("login").style.display="none";
+  document.getElementById("menu").style.display="block";
+  show("ranking");
+  renderRanking();
+}
 
-        const newUser = {
-            username: u, password: p, xp: 0, level: 1,
-            role: 'user', 
-            redeemedCodes: [], votedPolls: [], lastLogin: null
-        };
-        db.users.push(newUser);
-        saveDB();
-        alert("¡Cuenta creada!");
-        app.toggleAuth('login');
-    },
+/* ===== NAV ===== */
+function show(id){
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  document.getElementById("menu").style.display="block";
+  document.getElementById(id).style.display="block";
+}
 
-    login: () => {
-        const u = document.getElementById('login-user').value.trim();
-        const p = document.getElementById('login-pass').value.trim();
-        let role = 'user';
+/* ===== RANKING ===== */
+function renderRanking(){
+  const list = document.getElementById("rankingList");
+  list.innerHTML="";
+  Object.entries(dbLocal.users)
+    .sort((a,b)=>b[1].points-a[1].points)
+    .forEach(([name,data],i)=>{
+      const div=document.createElement("div");
+      div.className="card";
+      div.innerText=`#${i+1} ${name} - ${data.points} pts`;
+      list.appendChild(div);
+    });
+}
 
-        // 1. LÓGICA DE LOGIN MEJORADA
-        // Comprobamos si las credenciales coinciden con el Super Admin
-        if(u === SUPER_ADMIN_USER && p === SUPER_ADMIN_PASS) {
-            role = 'superadmin';
-        }
+/* ===== ENCUESTAS ===== */
+function vote(type){
+  dbLocal.votes[type]++;
+  dbLocal.users[currentUser].points+=1;
+  save();
+  updateVotes();
+  renderRanking();
+}
+function updateVotes(){
+  document.getElementById("votes").innerText =
+   `Sí: ${dbLocal.votes.si} | No: ${dbLocal.votes.no}`;
+}
+updateVotes();
 
-        // Buscamos si el usuario ya existe en la base de datos
-        let userFound = db.users.find(user => user.username === u);
-
-        // Si es Super Admin pero NO existe en la DB (primera vez o borrado), lo creamos con 0 XP
-        if(role === 'superadmin' && !userFound) {
-            userFound = {
-                username: SUPER_ADMIN_USER,
-                password: SUPER_ADMIN_PASS, // Nota: en prod usar hash
-                xp: 0,          // AHORA EMPIEZA EN 0 XP
-                level: 1,       // AHORA EMPIEZA EN NIVEL 1
-                role: 'superadmin', // Mantiene los poderes
-                redeemedCodes: [], 
-                votedPolls: [],
-                lastLogin: null
-            };
-            db.users.push(userFound); // Lo guardamos en la DB como un usuario más
-            saveDB();
-        } 
-        // Si es Super Admin y YA existe, verificamos contraseña (en este caso hardcodeada coincide)
-        else if (role === 'superadmin' && userFound) {
-            // Actualizamos el rol por si acaso se hubiera perdido, pero respetamos su XP guardada
-            userFound.role = 'superadmin';
-        }
-
-        // Verificación final de contraseña para usuarios normales
-        if(role !== 'superadmin') {
-             userFound = db.users.find(user => user.username === u && user.password === p);
-        }
-
-        // Si encontramos usuario válido
-        if(userFound) {
-            currentUser = userFound;
-            logic.dailyLoginReward();
-            app.enterApp();
-        } else {
-            alert("Datos incorrectos o usuario no existe.");
-        }
-    },
-
-    enterApp: () => {
-        document.getElementById('auth-screen').classList.add('hidden');
-        document.getElementById('app-screen').classList.remove('hidden');
-        view.updateHeader();
-
-        // Mostrar botón Admin si tiene rango
-        if(currentUser.role === 'admin' || currentUser.role === 'superadmin') {
-            document.getElementById('btn-admin').classList.remove('hidden');
-        } else {
-            document.getElementById('btn-admin').classList.add('hidden');
-        }
-
-        // Configurar herramientas según rol
-        const tools = document.getElementById('super-admin-tools');
-        if(currentUser.role === 'superadmin') {
-            tools.classList.remove('hidden');
-        } else {
-            tools.classList.add('hidden'); 
-        }
-
-        renderAll();
-    },
-
-    logout: () => { 
-        if(currentUser) saveDB(); // GUARDAR ANTES DE SALIR
-        currentUser = null; 
-        location.reload(); 
-    },
-
-    redeemCode: () => {
-        const input = document.getElementById('code-input');
-        const code = input.value.trim().toUpperCase();
-        if(!code) return;
-        
-        if(currentUser.redeemedCodes.includes(code)) return alert("Ya usado.");
-        
-        if(db.codes.includes(code)) {
-            logic.addXP(50);
-            currentUser.redeemedCodes.push(code);
-            saveDB();
-            alert(`¡+50 XP!`);
-            input.value = "";
-        } else {
-            alert("Código inválido.");
-        }
-    }
-};
-
-const logic = {
-    addXP: (amount) => {
-        currentUser.xp += amount;
-        currentUser.level = Math.floor(currentUser.xp / 100) + 1;
-        
-        // Actualizar en el array principal de DB para que se guarde
-        const idx = db.users.findIndex(u => u.username === currentUser.username);
-        if(idx !== -1) db.users[idx] = currentUser;
-        
-        saveDB(); // Guardado automático tras ganar XP
-        view.updateHeader();
-    },
-
-    dailyLoginReward: () => {
-        const today = new Date().toDateString();
-        if(currentUser.lastLogin !== today) {
-            currentUser.lastLogin = today;
-            alert("Login Diario: +10 XP");
-            logic.addXP(10); // Esto ya llama a saveDB
-        }
-    },
-
-    votePoll: (pollId, idx) => {
-        if(currentUser.votedPolls.includes(pollId)) return alert("Ya votaste.");
-        const poll = db.polls.find(p => p.id === pollId);
-        if(poll) {
-            poll.options[idx].votes++;
-            currentUser.votedPolls.push(pollId);
-            logic.addXP(40); // Esto guarda todo
-            alert("Voto: +40 XP");
-        }
-    },
-
-    checkMonthlyReset: () => {
-        const currentMonth = new Date().getMonth();
-        if(db.lastResetMonth !== currentMonth) {
-            if(db.users.length > 0) {
-                const sorted = [...db.users].sort((a,b) => b.xp - a.xp);
-                db.lastMonthWinner = sorted[0].username;
-            }
-            db.users.forEach(u => { u.xp = 0; u.votedPolls = []; u.level = 1; });
-            db.lastResetMonth = currentMonth;
-            saveDB();
-        }
-    }
-};
-
-const admin = {
-    addCode: () => {
-        if(currentUser.role !== 'superadmin') return alert("Solo ddxus puede crear códigos.");
-        const c = document.getElementById('new-code-val').value.trim().toUpperCase();
-        if(c) { db.codes.push(c); saveDB(); alert("Código creado."); }
-    },
-
-    addAdmin: () => {
-        if(currentUser.role !== 'superadmin') return alert("Solo ddxus puede nombrar admins.");
-        const targetUser = document.getElementById('new-admin-user').value.trim();
-        const userIdx = db.users.findIndex(u => u.username === targetUser);
-        
-        if(userIdx > -1) {
-            db.users[userIdx].role = 'admin';
-            saveDB();
-            alert(`¡${targetUser} ahora es Admin!`);
-        } else {
-            alert("Usuario no encontrado.");
-        }
-    },
-
-    postNews: () => {
-        const title = document.getElementById('news-title').value;
-        const body = document.getElementById('news-content').value;
-        const img = document.getElementById('news-img').value;
-
-        if(title && body) {
-            db.news.unshift({
-                id: Date.now(),
-                title: title,
-                content: body,
-                img: img,
-                date: new Date().toLocaleDateString(),
-                author: currentUser.username
-            });
-            saveDB();
-            alert("Noticia publicada.");
-            view.renderNews();
-            document.getElementById('news-title').value = "";
-            document.getElementById('news-content').value = "";
-        } else {
-            alert("Falta título o contenido.");
-        }
-    },
-
-    createPoll: () => {
-        const q = document.getElementById('poll-question').value;
-        const o1 = document.getElementById('poll-opt1').value;
-        const o2 = document.getElementById('poll-opt2').value;
-        if(q && o1 && o2) {
-            db.polls.unshift({id: Date.now(), question: q, options: [{txt:o1, votes:0}, {txt:o2, votes:0}], active: true});
-            saveDB();
-            alert("Encuesta creada.");
-            view.renderPolls();
-        }
-    },
-    
-    forceReset: () => {
-        if(confirm("¿Resetear mes? Esto pondrá a todos en 0 XP.")) { 
-            db.lastResetMonth = 99; // Forzar cambio
-            logic.checkMonthlyReset(); 
-            location.reload(); 
-        }
-    }
-};
-
-const view = {
-    show: (id) => {
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(id === 'ranking') renderAll();
-        if(id === 'noticias') view.renderNews();
-        if(id === 'encuestas') view.renderPolls();
-    },
-
-    updateHeader: () => {
-        document.getElementById('display-user').innerText = currentUser.username;
-        document.getElementById('display-xp').innerText = currentUser.xp;
-        document.getElementById('display-lvl').innerText = "Nvl " + currentUser.level;
-        
-        const badge = document.getElementById('role-badge');
-        badge.className = "role-badge";
-        badge.innerText = "";
-        if(currentUser.role === 'superadmin') {
-            badge.classList.add('role-super'); badge.innerText = "Jefe Supremo";
-        } else if (currentUser.role === 'admin') {
-            badge.classList.add('role-admin'); badge.innerText = "Admin";
-        }
-    },
-
-    renderNews: () => {
-        const container = document.getElementById('news-container');
-        container.innerHTML = "";
-        db.news.forEach(n => {
-            const imgHTML = n.img ? `<img src="${n.img}" class="news-img">` : '';
-            const html = `
-                <div class="news-card">
-                    <div class="news-header">
-                        <h3 class="news-title">${n.title}</h3>
-                        <span class="news-date">${n.date} - Por ${n.author}</span>
-                    </div>
-                    <div class="news-body">
-                        <p>${n.content}</p>
-                        ${imgHTML}
-                    </div>
-                </div>`;
-            container.innerHTML += html;
-        });
-    },
-
-    renderRanking: () => {
-        const tbody = document.getElementById('ranking-list');
-        tbody.innerHTML = "";
-        const sorted = [...db.users].sort((a,b) => b.xp - a.xp).slice(0, 50);
-
-        sorted.forEach((u, index) => {
-            let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`;
-            let rowClass = index < 3 ? `rank-${index+1}` : "";
-            
-            let nameDisplay = u.username;
-            if(u.role === 'superadmin') nameDisplay += " (👑)";
-            if(u.role === 'admin') nameDisplay += " (🛡️)";
-
-            tbody.innerHTML += `<tr><td class="${rowClass}">${medal}</td><td class="${rowClass}">${nameDisplay}</td><td>${u.level}</td><td>${u.xp} XP</td></tr>`;
-        });
-        if(db.lastMonthWinner) {
-            document.getElementById('winner-name').innerText = db.lastMonthWinner;
-            document.getElementById('winner-banner').classList.remove('hidden');
-            document.getElementById('winner-banner').style.display = 'block';
-        }
-    },
-
-    renderPolls: () => {
-        const container = document.getElementById('polls-container');
-        container.innerHTML = "";
-        db.polls.forEach(poll => {
-            const total = poll.options.reduce((a, b) => a + b.votes, 0);
-            let opts = "";
-            poll.options.forEach((o, i) => {
-                const pct = total ? Math.round((o.votes/total)*100) : 0;
-                opts += `<div class="poll-option" onclick="logic.votePoll(${poll.id}, ${i})">
-                    <div class="poll-bar" style="width:${pct}%"></div>
-                    <div class="poll-text"><span>${o.txt}</span><small>${pct}%</small></div>
-                </div>`;
-            });
-            container.innerHTML += `<div class="poll-item"><h3>${poll.question}</h3>${opts}</div>`;
-        });
-    }
-};
-
-function renderAll() { view.renderRanking(); view.renderPolls(); view.renderNews(); }
-
-app.init();
+/* ===== CODIGOS ===== */
+function redeem(){
+  const code = document.getElementById("codeInput").value;
+  if(code==="CARTA10"){
+    dbLocal.users[currentUser].points+=10;
+    save();
+    renderRanking();
+    document.getElementById("codeMsg").innerText="Código válido +10 pts";
+  }else{
+    document.getElementById("codeMsg").innerText="Código inválido";
+  }
+}
 </script>
+
 </body>
 </html>
+
+
 
 
